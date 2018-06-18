@@ -4,6 +4,8 @@
 
 #include "SimObject.h"
 
+SimObject::SimObject(string name, Point point):name(name) , location(point) {};
+
 const string &SimObject::getName() const {
     return name;
 }

@@ -11,10 +11,10 @@ private:
     Point location;
 
 public:
-
+    SimObject(string name , Point point);
     const string &getName() const;
     const Point &getLocation() const;
-    virtual void update();
+    virtual void update() = 0;
 };
 
 

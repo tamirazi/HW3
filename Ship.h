@@ -16,7 +16,7 @@ public:
     void setDestination(const Polar_vector &destination , double speed);
     void setAngle(const Cartesian_vector &angle, double speed);
 
-private:
+protected:
     status ship_status;
     double fuel , speed , consumption;
     Polar_vector angle;

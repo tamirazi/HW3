@@ -1,4 +1,5 @@
 #include "View.h"
+#include <sstream>
 #ifndef HW3_CONTROLLER_H
 #define HW3_CONTROLLER_H
 
@@ -18,6 +19,9 @@ public:
 
 private:
     View* view_ptr;
+    string user_command;
+    string args[];
+    string line;
 };
 
 

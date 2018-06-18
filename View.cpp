@@ -16,10 +16,10 @@ void View::show() {
     cout << "origin: (" << xorigin << " , " << yorigin << ")" << endl;
 
     int mod;
-    int x = xorigin;
-    int max_x = (size * scale + xorigin) - scale;
-    int max_y = size * scale + yorigin - scale;
-    int max_print = yorigin;
+    double x = xorigin;
+    double max_x = (size * scale + xorigin) - scale;
+    double max_y = size * scale + yorigin - scale;
+    double max_print = yorigin;
 
     while((max_print + (scale * 3)) <= max_y){
         max_print += scale * 3;
@@ -31,8 +31,6 @@ void View::show() {
 
         if((c % 3) == mod){
             cout << setw(4) << i << " ";
-
-
         }else{
             cout << setw(7);
         }
@@ -40,7 +38,6 @@ void View::show() {
         for (int j = x; j <= max_x; j += scale) {
             //todo: if in (j , i) there is a ship print it
             cout << ". ";
-
         }
 
         cout << endl;
@@ -68,7 +65,7 @@ void View::setDefault() {
     yorigin = 0;
 }
 
-void View::setOrigins(int newXOrigin, int newYOrigin) {
+void View::setOrigins(double newXOrigin, double newYOrigin) {
     xorigin = newXOrigin;
     yorigin = newYOrigin;
 }

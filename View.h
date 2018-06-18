@@ -10,14 +10,15 @@ using namespace std;
 class View {
 
 private:
-    int size , scale , xorigin , yorigin;
+    int size , scale;
+    double xorigin , yorigin;
     vector<vector<string>>* map;
-
 
 public:
     View();
+    ~View();
     void show();
-    void setOrigins(int x , int y);
+    void setOrigins(double x , double y);
     void zoom(int num);
     void setDefault();
     void setSize(int num);

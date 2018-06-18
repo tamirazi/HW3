@@ -10,12 +10,12 @@ int main() {
     View v;
 
     v.zoom(2);
-    v.setOrigins(-10 , -10);
+    v.setOrigins(-10.3 , -10.3);
     v.setSize(25);
     v.show();
 
     v.zoom(5);
-    v.setOrigins(-20 , -20);
+    v.setOrigins(-20.5 , -20.5);
     v.setSize(15);
     v.show();
     return 0;

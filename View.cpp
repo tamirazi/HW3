@@ -15,27 +15,20 @@ void View::show() {
     cout << "scale: " << scale << ", ";
     cout << "origin: (" << xorigin << " , " << yorigin << ")" << endl;
 
-    int mod;
     double x = xorigin;
     double max_x = (size * scale + xorigin) - scale;
     double max_y = size * scale + yorigin - scale;
-    double max_print = yorigin;
+    double enterY = yorigin + (size-1)/3*(scale*3);
 
-    while((max_print + (scale * 3)) <= max_y){
-        max_print += scale * 3;
-    }
+    for (double i = max_y , c = 0; i >= yorigin ; i -= scale , c++) {
 
-    mod = (max_y - max_print) / scale;
+        double thisScale = max_y-scale*c;
+        if(thisScale == enterY){
+            cout << setw(5)<< thisScale <<" ";
+            enterY -= 3*scale;
+        }else { cout << setw(8);}
 
-    for (int i = max_y , c = 0; i >= yorigin ; i -= scale , c++) {
-
-        if((c % 3) == mod){
-            cout << setw(4) << i << " ";
-        }else{
-            cout << setw(7);
-        }
-
-        for (int j = x; j <= max_x; j += scale) {
+        for (int j = (int)x; j <= max_x; j += scale) {
             //todo: if in (j , i) there is a ship print it
             cout << ". ";
         }

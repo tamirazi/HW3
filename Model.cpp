@@ -14,7 +14,5 @@ Model & Model::getInstance() {
 
 Model::Model() {
     //initialize all Model objects here
-
-
 }
 

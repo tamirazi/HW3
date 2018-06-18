@@ -20,7 +20,6 @@ public:
 private:
     View* view_ptr;
     string user_command;
-    string args[];
     string line;
 };
 

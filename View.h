@@ -16,7 +16,6 @@ private:
 
 public:
     View();
-    ~View();
     void show();
     void setOrigins(double x , double y);
     void zoom(int num);

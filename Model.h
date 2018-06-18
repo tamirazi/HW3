@@ -8,7 +8,7 @@ class Model {
 private:
     static Model* model;
     Model();
-    ~Model(){delete model;};
+    ~Model(){};
     friend class ModelDestroyer;
 
 public:

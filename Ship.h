@@ -10,7 +10,7 @@ enum status {Stopped , Docked , Dead_in_the_water ,
     Moving_to , Moving_on_course} ;
 class Ship : public SimObject{
 public:
-    Ship(string name , Point p);
+    Ship(const string& name ,const Point& p);
     void stop();
     void show_Status();
     void setDestination(const Polar_vector &destination , double speed);

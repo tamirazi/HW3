@@ -3,7 +3,7 @@
 //
 #include "Ship.h"
 
-Ship::Ship(string name, Point p):SimObject(name,p) , ship_status (Stopped){}
+Ship::Ship(const string& name ,const Point& p):SimObject(name,p) , ship_status (Stopped){}
 
 
 void Ship::stop() {

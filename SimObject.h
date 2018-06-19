@@ -11,9 +11,16 @@ private:
     Point location;
 
 public:
-    SimObject(string name , Point point);
-    const string &getName() const;
-    const Point &getLocation() const;
+    SimObject(const string& name ,const Point& point):name(name) , location(point){};
+
+    const string &getName() const {
+        return name;
+    }
+
+    const Point &getLocation() const {
+        return location;
+    }
+
     virtual void update() = 0;
 };
 

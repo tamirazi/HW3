@@ -7,6 +7,7 @@
 #include "Port.h"
 #include <vector>
 #include <memory>
+#include <algorithm>
 //Singleton object
 class Model {
 private:
@@ -29,6 +30,8 @@ public:
     void addPort(Port *toAdd);
     void showSimObjectStatus();
     vector<shared_ptr<SimObject>>& returnObjectsVector(){return simVector;};
+    bool thereIsSuchShip(const string& ship);
+    shared_ptr<SimObject> getObjectByName(const string& name);
 
 };
 

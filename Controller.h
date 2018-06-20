@@ -15,7 +15,6 @@ class Controller {
 public:
     Controller();
     ~Controller();
-
     // creates View object, runs the program by accepting user commands, then destroys View object
     void run();
     void Input(const string& portsFile);

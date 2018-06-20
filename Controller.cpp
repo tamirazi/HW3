@@ -78,6 +78,15 @@ void Controller::run() {
 
         }
         //---------------------------------------
+        //Ships Command
+        if(Model::getInstance().thereIsSuchShip(user_command)){
+            shared_ptr<SimObject> ship = Model::getInstance().getObjectByName(user_command);
+            string command;
+            ss >> command;
+            ship->insertCommandToQueue(command);
+            ship->update();
+        }
+        //---------------------------------------
         if(user_command == "exit"){
             cout << "Exit..."<< endl;
             return;

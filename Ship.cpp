@@ -3,20 +3,17 @@
 //
 #include "Ship.h"
 
-Ship::Ship(const string& name ,const string& type,const Point& p ):SimObject(name,type,p),ship_status (Stopped){
-    fuel = 0;
-    speed = 0;
-}
+Ship::Ship(const string& name ,const string& type,const Point& p ):SimObject(name,type,p),ship_status (Stopped),fuel(0),speed(0){}
 void Ship::stop() {
     speed = 0;
     ship_status = Stopped;
 }
-void Ship::setDestination(const Polar_vector &destination , double newSpeed) {
+void Ship::movingToDestintion(const Polar_vector &destination , double newSpeed) {
     ship_status = Moving_to;
     Ship::destination = destination;
     speed = newSpeed;
 }
-void Ship::setAngle(const Cartesian_vector &angle , double newSpeed) {
+void Ship::movingOnCourse(const Cartesian_vector &angle , double newSpeed) {
     Ship::angle = angle;
     speed = newSpeed;
     ship_status = Moving_on_course;

@@ -45,16 +45,12 @@ void View::show() {
 
         cout << endl;
     }
-
+    cout << " ";
     for (int k = 0; k < size ; ++k) {
-        if((k % 3) == 0){
-            cout << setw(6) << x ;
+        if((k % 3) == 0) {
+            cout << setw(6) << x;
             x += (3 * scale);
-
-        }else{
-            cout << setw(7);
         }
-
     }
 
     cout << endl << endl;

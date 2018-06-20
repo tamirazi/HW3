@@ -14,7 +14,7 @@ private:
 
 public:
     SimObject(const string& name ,const string& type ,const Point& point):name(name) ,type(type), location(point){}
-    virtual void show_Status() = 0 ;
+    virtual void show_Status() = 0;
     const string &getType() const {
         return type;
     };
@@ -24,6 +24,7 @@ public:
     const Point &getLocation() const {
         return location;
     }
+    virtual void insertCommandToQueue(const string& command) = 0;
     virtual void update() = 0;
 };
 

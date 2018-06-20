@@ -12,7 +12,7 @@ class View {
 private:
     int size , scale;
     double xorigin , yorigin;
-    vector<shared_ptr<Ship>> ships;
+    vector<shared_ptr<SimObject>> objects;
 
 public:
     View();
@@ -21,7 +21,7 @@ public:
     void zoom(int num);
     void setDefault();
     void setSize(int num);
-    void getShips(const vector<shared_ptr<Ship>>& shipVector);
+    void getObjects(const vector<shared_ptr<SimObject>> &objVector);
 
 };
 

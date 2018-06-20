@@ -39,4 +39,23 @@ status Ship::getShip_status() const {
 void Ship::setShip_status(status ship_status) {
     Ship::ship_status = ship_status;
 }
+void Ship::show_Status() {
+    switch(ship_status){
+        case Stopped:
+            cout << ", Stopped " << endl;
+            break;
+        case Dead_in_the_water:
+            cout <<" Dead in the water"<< endl;
+            break;
+        case Moving_to:
+            cout <<  "Moving to (" << destination.delta_x << " , " << destination.delta_y
+                 << " ) " << "on course " << endl;
+            break;
+        case Moving_on_course:
+            cout << "Moving to " << sim_obj_dest->getName() << " on course " << endl;
+            break;
+        case Docked:
+            cout << "Docked at " << sim_obj_dest->getName() << endl;
+    }
+}
 

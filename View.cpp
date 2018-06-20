@@ -30,16 +30,16 @@ void View::show() {
 
         for (double j = x; j <= max_x; j += scale) {
             //todo: if in (j , i) there is a ship print it
-            vector<shared_ptr<Ship>>::iterator iter = ships.begin();
-            for(;iter != ships.end() ; ++iter){
+            vector<shared_ptr<SimObject>>::iterator iter = objects.begin();
+            for(;iter != objects.end() ; ++iter){
                 double dirX = iter.operator*().operator*().getLocation().x;
                 double dirY = iter.operator*().operator*().getLocation().y;
-                if(dirX >= j && dirX < j+scale && dirY <= i && dirY > i-scale ){
+                if(dirX >= j && dirX < j+scale && dirY >= i && dirY < i+scale ){
                     cout << iter.operator*().operator*().getName().substr(0,2);
                     break;
                 }
             }
-            if(iter == ships.end())
+            if(iter == objects.end())
                 cout << ". ";
         }
 
@@ -91,6 +91,6 @@ void View::zoom(int num) {
 
 }
 
-void View::getShips(const vector<shared_ptr<Ship>> &shipVector) {
-    ships = shipVector;
+void View::getObjects(const vector<shared_ptr<SimObject>> &objVector) {
+    objects = objVector;
 }

@@ -14,8 +14,9 @@ private:
     Model();
     ~Model(){};
     friend class ModelDestroyer;
-    vector<shared_ptr<Ship>> shipsVector;
-    vector<shared_ptr<Port>> portsVector;
+    vector<shared_ptr<SimObject>> simVector;
+
+
 
 
 public:
@@ -26,10 +27,9 @@ public:
     Model& operator= (const Model&&) = delete;
     void addShip(Ship* toAdd);
     void addPort(Port *toAdd);
-    void showShipsStatus();
-    void showPortsStatus();
-    vector<shared_ptr<Ship>>& returnShipVector(){return shipsVector;}
-    vector<shared_ptr<Port>>& returnPortVector(){return portsVector;}
+    void showSimObjectStatus();
+    vector<shared_ptr<SimObject>>& returnObjectsVector(){return simVector;};
+
 };
 
 

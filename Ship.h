@@ -19,7 +19,7 @@ public:
 
     Ship(const string& name ,const string& type,const Point& p);
     void stop();
-    virtual void show_Status() = 0 ;
+    virtual void show_Status();
     void setDestination(const Polar_vector &destination , double speed);
     void setAngle(const Cartesian_vector &angle, double speed);
     double getFuel() const;

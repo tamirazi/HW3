@@ -4,6 +4,8 @@
 
 #include <fstream>
 #include "Controller.h"
+#include <algorithm>
+
 
 Controller::Controller() {
     view_ptr.reset(new View());
@@ -24,10 +26,11 @@ void Controller::run() {
         getline(cin , line);
         stringstream ss(line);
         getline(ss , user_command , ' ');
+        transform(user_command.begin(),user_command.end(),user_command.begin(),::tolower);
         //---------------------------------------
         //View Commands
         if(user_command == "show"){
-            view_ptr->getShips(Model::getInstance().returnShipVector());
+            view_ptr->getObjects(Model::getInstance().returnObjectsVector());
             view_ptr->show();
         }else if(user_command == "default"){
             view_ptr->setDefault();
@@ -53,8 +56,7 @@ void Controller::run() {
         //---------------------------------------
         //Model Commands
         if(user_command == "status"){
-            Model::getInstance().showPortsStatus();
-            Model::getInstance().showShipsStatus();
+            Model::getInstance().showSimObjectStatus();
         }else if(user_command == "create"){
             double x=0,y=0;
             int resistance =0 , secondArg = 0;

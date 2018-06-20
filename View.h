@@ -1,18 +1,18 @@
-#include <iostream>
-#include <string>
-#include <vector>
 
 #ifndef HW3_VIEW_H
 #define HW3_VIEW_H
-
-
+#include <iostream>
+#include <string>
+#include <vector>
+#include "Ship.h"
+#include <memory>
 using namespace std;
 class View {
 
 private:
     int size , scale;
     double xorigin , yorigin;
-    vector<vector<string>>* map;
+    vector<shared_ptr<Ship>> ships;
 
 public:
     View();
@@ -21,6 +21,7 @@ public:
     void zoom(int num);
     void setDefault();
     void setSize(int num);
+    void getShips(const vector<shared_ptr<Ship>>& shipVector);
 
 };
 

@@ -28,9 +28,19 @@ void View::show() {
             enterY -= 3*scale;
         }else { cout << setw(8);}
 
-        for (int j = (int)x; j <= max_x; j += scale) {
+        for (double j = x; j <= max_x; j += scale) {
             //todo: if in (j , i) there is a ship print it
-            cout << ". ";
+            vector<shared_ptr<Ship>>::iterator iter = ships.begin();
+            for(;iter != ships.end() ; ++iter){
+                double dirX = iter.operator*().operator*().getLocation().x;
+                double dirY = iter.operator*().operator*().getLocation().y;
+                if(dirX >= j && dirX < j+scale && dirY <= i && dirY > i-scale ){
+                    cout << iter.operator*().operator*().getName().substr(0,2);
+                    break;
+                }
+            }
+            if(iter == ships.end())
+                cout << ". ";
         }
 
         cout << endl;
@@ -79,4 +89,8 @@ void View::zoom(int num) {
     }else
         cerr << "zoom function: " << "illegal argument" << endl;
 
+}
+
+void View::getShips(const vector<shared_ptr<Ship>> &shipVector) {
+    ships = shipVector;
 }

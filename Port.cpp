@@ -5,8 +5,8 @@
 #include "Port.h"
 
 
-Port::Port(string name1, Point point, int capacity, int make_per_hours)
-        : SimObject(name1, point), capacity(capacity), make_per_hours(make_per_hours) {
+Port::Port(const string& name1,const string& type, Point point, int capacity, int make_per_hours)
+        : SimObject(name1,type, point), capacity(capacity), make_per_hours(make_per_hours) {
 }
 
 int Port::getCapicity() const {
@@ -19,4 +19,8 @@ int Port::getMake_per_hours() const {
 
 void Port::update() {
 
+}
+
+void Port::show_Status() {
+    cout << getType() << " " << getName() << " at position ("<< getLocation().x << ", " << getLocation().y << "), Fuel available: " << getCapicity() << " kl" << endl;
 }

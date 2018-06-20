@@ -12,10 +12,11 @@ private:
     int make_per_hours;
 
 public:
-    Port(string name1, Point point, int capacity, int make_per_hours);
+    Port(const string& name1,const string& type, Point point, int capacity, int make_per_hours);
     int getCapicity() const;
     int getMake_per_hours() const;
     void update() override;
+    void show_Status();
 
 
 };

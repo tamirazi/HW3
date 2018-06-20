@@ -29,7 +29,7 @@ void Controller::run() {
         transform(user_command.begin(),user_command.end(),user_command.begin(),::tolower);
         //---------------------------------------
         //View Commands
-        if(user_command == "show"){
+        if(user_command == "show"){//updating the view and show the board
             view_ptr->getObjects(Model::getInstance().returnObjectsVector());
             view_ptr->show();
         }else if(user_command == "default"){
@@ -55,10 +55,10 @@ void Controller::run() {
         }
         //---------------------------------------
         //Model Commands
-        if(user_command == "status"){
+        if(user_command == "status"){//print status for all simulator objects existing in board
             Model::getInstance().showSimObjectStatus();
-        }else if(user_command == "create"){
-            double x=0,y=0;
+        }else if(user_command == "create"){//create new ship by command
+            double x=0,y=0;//for parsing the command
             int resistance =0 , secondArg = 0;
             string name;
             string type;
@@ -74,16 +74,15 @@ void Controller::run() {
             location >> y;
             ss >> resistance;
             ss >> secondArg;
-            Model::getInstance().addShip(shipFactory::getInstance().createNewShip(name,type,Point(x,y),secondArg));
-
+            Model::getInstance().addShip(shipFactory::getInstance().createNewShip(name,type,Point(x,y),secondArg));//creating the ship with ship factory and adding it into the model
         }
         //---------------------------------------
         //Ships Command
-        if(Model::getInstance().thereIsSuchShip(user_command)){
-            shared_ptr<SimObject> ship = Model::getInstance().getObjectByName(user_command);
+        if(Model::getInstance().thereIsSuchShip(user_command)){//if there is such ship
+            shared_ptr<SimObject> ship = Model::getInstance().getObjectByName(user_command);//get reference to ship
             string command;
             ss >> command;
-            ship->insertCommandToQueue(command);
+            ship->insertCommandToQueue(command);//insert the command into ship queue
             ship->update();
         }
         //---------------------------------------

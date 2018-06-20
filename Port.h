@@ -17,7 +17,7 @@ public:
     int getMake_per_hours() const;
     void update() override;
     void show_Status();
-    void insertCommandToQueue(const string& command){};
+    void insertCommandToQueue(const string& command){};//an empty function implemented from simObject to use in ship only
 
 };
 

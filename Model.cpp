@@ -16,28 +16,28 @@ Model::Model() {
     //initialize all Model objects here
 }
 
-void Model::addShip(Ship *toAdd) {
+void Model::addShip(Ship *toAdd) {//add a Ship to the objects vector
     shared_ptr<SimObject> enter(toAdd);
     simVector.push_back(enter);
 }
-void Model::addPort(Port *toAdd) {
+void Model::addPort(Port *toAdd) {//add a Port to the objects vector
     shared_ptr<SimObject> enter(toAdd);
     simVector.push_back(enter);
 }
 
 
-void Model::showSimObjectStatus() {
+void Model::showSimObjectStatus() {//show all simulator object status
     vector<shared_ptr<SimObject>>::iterator iter = simVector.begin();
     for(;iter != simVector.end() ; ++iter)
         iter.operator*().operator*().show_Status();
 }
 
-bool Model::thereIsSuchShip(const string &ship) {
+bool Model::thereIsSuchShip(const string &ship) {//checks if there is a ship named like the string argument return boolean YES-found NO-not found
     vector<shared_ptr<SimObject>>::iterator iter = simVector.begin();
     for(;iter != simVector.end();++iter){
         string tmp  = iter.operator*().operator*().getName();
         transform(tmp.begin(),tmp.end(),tmp.begin(),::tolower);
-        if(tmp.compare(ship) == 0 && iter.operator*().operator*().getType().compare("Port") == 0 ){
+        if(tmp.compare(ship) == 0 && iter.operator*().operator*().getType().compare("Port") == 0 ){//if found but as a Port
             cout << "You Can't change a Port"<< endl;
             return false;
         }else if(tmp.compare(ship) == 0) return  true;
@@ -45,15 +45,15 @@ bool Model::thereIsSuchShip(const string &ship) {
     return false;
 }
 
-shared_ptr<SimObject> Model::getObjectByName(const string &name) {
+shared_ptr<SimObject> Model::getObjectByName(const string &name) {//returns a pointer to object by a string name return null if not found
     vector<shared_ptr<SimObject>>::iterator iter = simVector.begin();
     for(;iter != simVector.end();++iter){
         string tmp  = iter.operator*().operator*().getName();
         transform(tmp.begin(),tmp.end(),tmp.begin(),::tolower);
-        if(tmp.compare(name) == 0) {
+        if(tmp.compare(name) == 0) {//if found the name return the pointer
             return iter.operator*();
         }
     }
-    return nullptr;
+    return nullptr;//else return null
 }
 

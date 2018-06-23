@@ -21,7 +21,7 @@ Controller::~Controller() {
 void Controller::run() {
 
     while(true){
-        cout << "Time " << "t" << ": ";
+        cout << "Time " << Model::getInstance().getTimer() << ": ";
         cout << "Enter command: ";
         getline(cin , line);
         stringstream ss(line);
@@ -90,8 +90,8 @@ void Controller::run() {
             ss >> command;
             //Ship* s = Model::getInstance().getShipByName(user_command).get(); //test to downcast Simobj to ship
             pharseLineForShip(ss.str());
-            ship->insertCommandToQueue(command);//insert the command into ship queue
-            ship->update();
+           // ship->insertCommandToQueue(command);//insert the command into ship queue
+            //ship->update();
         }
         //---------------------------------------
         if(user_command == "exit"){
@@ -140,8 +140,7 @@ void Controller::pharseLineForShip(const string &usrLine) {
     stringstream ss(usrLine);
     getline(ss , name , ' ');
     getline(ss , command , ' ');
-    Ship* s = Model::getInstance().getShipByName(name).get();
-    s->setSpeed(100);
+    Ship* s = Model::getInstance().getShipByName(name);
     if(command == "course"){
         string args;
         getline(ss , args);
@@ -150,12 +149,25 @@ void Controller::pharseLineForShip(const string &usrLine) {
             double angle, speed;
             ssargs >> angle;
             ssargs >> speed;
-            auto vec = new Polar_vector();
+            Polar_vector* vec = new Polar_vector();
             vec->theta = angle;
             s->movingOnCourse(*vec , speed);
             s->setShip_status(Moving_on_course);
         }
 
+    }else if( command == "position"){
+        string args;
+        getline(ss,args);
+        stringstream ssargs(args);
+        if(wordsCounter(args) == 3){
+            double x , y , speed;
+            ssargs >> x >> y >> speed;
+            Cartesian_vector* vec = new Cartesian_vector();
+            vec->delta_x = x;
+            vec->delta_y = y;
+            s->movingToDestintion(*vec , speed);
+            s->setShip_status(Moving_to);
+        }
     }
 
 

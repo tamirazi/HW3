@@ -12,7 +12,9 @@
 #include <algorithm>
 //Singleton object
 class Model {
+
 private:
+    int timer =0 ;
     static Model* model;
     Model();
     ~Model(){};
@@ -27,12 +29,15 @@ public:
     Model& operator= (const Model&&) = delete;
     void addShip(Ship* toAdd);
     void addPort(Port *toAdd);
+
+    int getTimer() const;
+
     void showSimObjectStatus();
     void go();
     vector<shared_ptr<SimObject>>& returnObjectsVector(){return simVector;};
     bool thereIsSuchShip(const string& ship);
     shared_ptr<SimObject> getObjectByName(const string& name);
-    shared_ptr<Ship> getShipByName(const string &name);
+    Ship * getShipByName(const string &name);
     shared_ptr<Port> getPortByName(const string& name);
 };
 

@@ -28,7 +28,7 @@ public:
         }
     }
     void update(){
-        cout << speed << " " << angle.theta <<endl;
+        cout << speed << " " << angle.theta  <<endl;
     }//update the ship missions
     void show_Status() {//show freighter status
         cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;

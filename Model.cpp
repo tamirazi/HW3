@@ -59,12 +59,12 @@ shared_ptr<SimObject> Model::getObjectByName(const string &name) {//returns a po
     return nullptr;//else return null
 }
 
-shared_ptr<Ship> Model::getShipByName(const string &name) {// get ship object from simobject vector by name
+Ship * Model::getShipByName(const string &name) {// get ship object from simobject vector by name
     if(thereIsSuchShip(name)){
         Ship* ship = dynamic_cast<Ship*>(getObjectByName(name).get());
         if(ship){
-            shared_ptr<Ship> s(ship);
-            return s;
+            //shared_ptr<Ship> s(ship);
+            return ship;
         }
     }
     return nullptr;
@@ -81,10 +81,15 @@ shared_ptr<Port> Model::getPortByName(const string &name) {
 }
 
 void Model::go() {
+    timer++;
 
     for( auto &s : simVector){
         s->update();
     }
+}
+
+int Model::getTimer() const {
+    return timer;
 }
 
 

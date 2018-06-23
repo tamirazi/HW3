@@ -19,11 +19,12 @@ public:
     void run();
     void Input(const string& portsFile);
     int wordsCounter(const string& line);
-    void pharseLineForShip(const string &lineptr);
+    bool pharseLineForErrors(const string &lineptr);
 private:
     shared_ptr<View> view_ptr;
     string user_command;
     string line;
+
 };
 
 

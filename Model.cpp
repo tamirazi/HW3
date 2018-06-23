@@ -70,11 +70,11 @@ Ship * Model::getShipByName(const string &name) {// get ship object from simobje
     return nullptr;
 }
 
-shared_ptr<Port> Model::getPortByName(const string &name) {
+Port * Model::getPortByName(const string &name) {
     Port* port = dynamic_cast<Port*>(getObjectByName(name).get());
     if(port){
-        shared_ptr<Port> elm(port);
-        return elm;
+        //shared_ptr<Port> elm(port);
+        return port;
     }
     return nullptr;
 

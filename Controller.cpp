@@ -89,9 +89,9 @@ void Controller::run() {
             string command;
             ss >> command;
             //Ship* s = Model::getInstance().getShipByName(user_command).get(); //test to downcast Simobj to ship
-            pharseLineForShip(ss.str());
-           // ship->insertCommandToQueue(command);//insert the command into ship queue
-            //ship->update();
+            if(pharseLineForErrors(ss.str()))
+                ship->insertCommandToQueue(ss.str());//insert the command into ship queue
+
         }
         //---------------------------------------
         if(user_command == "exit"){
@@ -134,7 +134,10 @@ void Controller::Input(const string &portsFile) {
 
 }
 
-void Controller::pharseLineForShip(const string &usrLine) {
+bool Controller::pharseLineForErrors(const string &usrLine) {
+    //this function pharsing the line from the user for checking errors
+    //if the command are good
+    //add the command to specipic ship queue
 
     string command , name;
     stringstream ss(usrLine);
@@ -149,10 +152,13 @@ void Controller::pharseLineForShip(const string &usrLine) {
             double angle, speed;
             ssargs >> angle;
             ssargs >> speed;
-            Polar_vector* vec = new Polar_vector();
-            vec->theta = angle;
-            s->movingOnCourse(*vec , speed);
-            s->setShip_status(Moving_on_course);
+            if(speed <= 0){
+                cerr << "speed argument illegal" << endl;
+                return false;
+            }else{
+                s->insertCommandToQueue(usrLine);
+                return  true;
+            }
         }
 
     }else if( command == "position"){
@@ -160,16 +166,54 @@ void Controller::pharseLineForShip(const string &usrLine) {
         getline(ss,args);
         stringstream ssargs(args);
         if(wordsCounter(args) == 3){
-            double x , y , speed;
+            double speed , x , y;
             ssargs >> x >> y >> speed;
-            Cartesian_vector* vec = new Cartesian_vector();
-            vec->delta_x = x;
-            vec->delta_y = y;
-            s->movingToDestintion(*vec , speed);
-            s->setShip_status(Moving_to);
+            if(speed <= 0){
+                cerr << "speed argument illegal" << endl;
+                return false;
+            }
+            else{
+                s->insertCommandToQueue(usrLine);
+                return true;
+            }
+        }else{
+            cerr << "need more arguments " << endl;
+            //todo exceptopn
+            return false;
         }
+    }else if(command == "destination"){
+        string args;
+        getline(ss,args);
+        stringstream ssargs(args);
+
+        if(wordsCounter(args) == 2){
+            string portName;
+            double speed;
+            ssargs >> portName >> speed;
+            Port* p = Model::getInstance().getPortByName(portName);
+            if(p){
+                if(speed > 0){
+                    s->insertCommandToQueue(usrLine);
+                    return true;
+                } else
+                    cerr << "speed argument illegal" << endl;
+                return false;
+            }
+            else{
+                cerr << "port name ERROR";
+                //todo exception
+                return false;
+            }
+
+        }else{
+            cerr << "nedd more arguments " << endl;
+            //todo exceptopn
+            return false;
+        }
+
     }
 
+    return false;
 
 
 }

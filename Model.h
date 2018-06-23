@@ -38,7 +38,7 @@ public:
     bool thereIsSuchShip(const string& ship);
     shared_ptr<SimObject> getObjectByName(const string& name);
     Ship * getShipByName(const string &name);
-    shared_ptr<Port> getPortByName(const string& name);
+    Port * getPortByName(const string &name);
 };
 
 

@@ -6,6 +6,10 @@
 #ifndef HW3_SHIP_H
 #define HW3_SHIP_H
 #include "SimObject.h"
+#include "Port.h"
+#include "Ship.h"
+#include <sstream>
+#include <queue>
 enum status {Stopped , Docked , Dead_in_the_water ,
     Moving_to , Moving_on_course} ;
 class Ship : public SimObject{
@@ -15,6 +19,8 @@ protected:
     Polar_vector angle;
     Cartesian_vector destination;
     SimObject* sim_obj_dest;
+    vector<string> missions;
+    bool busy = false;
 public:
 
     Ship(const string& name ,const string& type,const Point& p);
@@ -23,11 +29,13 @@ public:
     void movingToDestintion(const Polar_vector &destination , double speed);
     void movingOnCourse(const Cartesian_vector &angle, double speed);
     double getFuel() const;
+    void setSim_obj_dest(SimObject *sim_obj_dest);
     void setFuel(double fuel);
     double getSpeed() const;
     void setSpeed(double speed);
     status getShip_status() const;
     void setShip_status(status ship_status);
+    void pharseLineFromVec();
 
 };
 

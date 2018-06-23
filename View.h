@@ -21,7 +21,7 @@ public:
     void zoom(int num);
     void setDefault();
     void setSize(int num);
-    void getObjects(const vector<shared_ptr<SimObject>> &objVector);
+    void setObjects(const vector<shared_ptr<SimObject>> &objVector);
 
 };
 

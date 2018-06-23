@@ -3,7 +3,9 @@
 #ifndef HW3_MODEL_H
 #define HW3_MODEL_H
 
-#include "ShipFactory.h"
+#include "Ship.h"
+#include "shipFactory.h"
+#include "SimObject.h"
 #include "Port.h"
 #include <vector>
 #include <memory>
@@ -17,9 +19,6 @@ private:
     friend class ModelDestroyer;
     vector<shared_ptr<SimObject>> simVector;
 
-
-
-
 public:
     static Model &getInstance();
     Model(const Model&) = delete;
@@ -29,10 +28,12 @@ public:
     void addShip(Ship* toAdd);
     void addPort(Port *toAdd);
     void showSimObjectStatus();
+    void go();
     vector<shared_ptr<SimObject>>& returnObjectsVector(){return simVector;};
     bool thereIsSuchShip(const string& ship);
     shared_ptr<SimObject> getObjectByName(const string& name);
-
+    shared_ptr<Ship> getShipByName(const string &name);
+    shared_ptr<Port> getPortByName(const string& name);
 };
 
 

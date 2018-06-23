@@ -24,6 +24,7 @@ public:
     const Point &getLocation() const {
         return location;
     }
+
     virtual void insertCommandToQueue(const string& command) = 0;//insert a string that represent a command into a specific ship queue
     virtual void update() = 0;
 };

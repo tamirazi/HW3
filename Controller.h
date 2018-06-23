@@ -18,6 +18,8 @@ public:
     // creates View object, runs the program by accepting user commands, then destroys View object
     void run();
     void Input(const string& portsFile);
+    int wordsCounter(const string& line);
+    void pharseLineForShip(const string &lineptr);
 private:
     shared_ptr<View> view_ptr;
     string user_command;

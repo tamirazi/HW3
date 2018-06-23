@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Controller.h"
+#include "shipFactory.h"
 shipFactory* shipFactory::factory = nullptr;
 class ModelDestroyer {
 public:

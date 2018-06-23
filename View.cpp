@@ -87,6 +87,6 @@ void View::zoom(int num) {
 
 }
 
-void View::getObjects(const vector<shared_ptr<SimObject>> &objVector) {
+void View::setObjects(const vector<shared_ptr<SimObject>> &objVector) {
     objects = objVector;
 }

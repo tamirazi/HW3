@@ -27,10 +27,20 @@ public:
             cout << iter.operator*() << endl;
         }
     }
-    void update(){cout << "XXXXXXXXXXXXX"<<endl;}//update the ship missions
+    void update(){
+        cout << speed << " " << angle.theta <<endl;
+    }//update the ship missions
     void show_Status() {//show freighter status
         cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
+    }
+
+    int getResistance() const {
+        return resistance;
+    }
+
+    int getContainers_capacity() const {
+        return containers_capacity;
     }
 };
 class Patrol :public Ship{
@@ -54,6 +64,14 @@ public:
     void show_Status() {//show patrol status
         cout <<getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
+    }
+
+    int getResistance() const {
+        return resistance;
+    }
+
+    int getContainers_capacity() const {
+        return containers_capacity;
     }
 };
 class Cruiser :public Ship{

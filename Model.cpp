@@ -14,6 +14,7 @@ Model & Model::getInstance() {
 
 Model::Model() {
     //initialize all Model objects here
+    addPort(new Port("Nagoya" , "Port" , Point(50,5) , 1000000 , 1000));
 }
 
 void Model::addShip(Ship *toAdd) {//add a Ship to the objects vector
@@ -23,6 +24,7 @@ void Model::addShip(Ship *toAdd) {//add a Ship to the objects vector
 void Model::addPort(Port *toAdd) {//add a Port to the objects vector
     shared_ptr<SimObject> enter(toAdd);
     simVector.push_back(enter);
+
 }
 
 
@@ -56,4 +58,33 @@ shared_ptr<SimObject> Model::getObjectByName(const string &name) {//returns a po
     }
     return nullptr;//else return null
 }
+
+shared_ptr<Ship> Model::getShipByName(const string &name) {// get ship object from simobject vector by name
+    if(thereIsSuchShip(name)){
+        Ship* ship = dynamic_cast<Ship*>(getObjectByName(name).get());
+        if(ship){
+            shared_ptr<Ship> s(ship);
+            return s;
+        }
+    }
+    return nullptr;
+}
+
+shared_ptr<Port> Model::getPortByName(const string &name) {
+    Port* port = dynamic_cast<Port*>(getObjectByName(name).get());
+    if(port){
+        shared_ptr<Port> elm(port);
+        return elm;
+    }
+    return nullptr;
+
+}
+
+void Model::go() {
+
+    for( auto &s : simVector){
+        s->update();
+    }
+}
+
 

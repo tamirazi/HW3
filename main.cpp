@@ -35,6 +35,7 @@ int main(int argc,char* argv[]) {
         Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Shikishima","Patrol",Point(0.0,0.0),10));
         Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Azizovitch","Patrol",Point(1,1),10));
         c.run();
+
     }
 
     return 0;

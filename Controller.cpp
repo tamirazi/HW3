@@ -88,9 +88,13 @@ void Controller::run() {
             shared_ptr<SimObject> ship = Model::getInstance().getObjectByName(user_command);//get reference to ship
             string command;
             ss >> command;
-            //Ship* s = Model::getInstance().getShipByName(user_command).get(); //test to downcast Simobj to ship
-            if(pharseLineForErrors(ss.str()))
+            Ship* s = Model::getInstance().getShipByName(user_command); //test to downcast Simobj to ship
+            if(command == "stop"){
+                s->stop();
+            }else if(pharseLineForErrors(ss.str())){
                 ship->insertCommandToQueue(ss.str());//insert the command into ship queue
+
+            }
 
         }
         //---------------------------------------
@@ -143,11 +147,12 @@ bool Controller::pharseLineForErrors(const string &usrLine) {
     stringstream ss(usrLine);
     getline(ss , name , ' ');
     getline(ss , command , ' ');
+    string args;
+    getline(ss , args);
+    stringstream ssargs(args);
     Ship* s = Model::getInstance().getShipByName(name);
+//course-----------------------------------------------------------------------
     if(command == "course"){
-        string args;
-        getline(ss , args);
-        stringstream ssargs(args);
         if(wordsCounter(args) == 2) {//2 args after course
             double angle, speed;
             ssargs >> angle;
@@ -156,15 +161,12 @@ bool Controller::pharseLineForErrors(const string &usrLine) {
                 cerr << "speed argument illegal" << endl;
                 return false;
             }else{
-                s->insertCommandToQueue(usrLine);
                 return  true;
             }
         }
-
+//position-----------------------------------------------------------------------
     }else if( command == "position"){
-        string args;
-        getline(ss,args);
-        stringstream ssargs(args);
+
         if(wordsCounter(args) == 3){
             double speed , x , y;
             ssargs >> x >> y >> speed;
@@ -173,18 +175,15 @@ bool Controller::pharseLineForErrors(const string &usrLine) {
                 return false;
             }
             else{
-                s->insertCommandToQueue(usrLine);
                 return true;
             }
-        }else{
+        }else {
             cerr << "need more arguments " << endl;
             //todo exceptopn
             return false;
         }
+//destination-----------------------------------------------------------------------
     }else if(command == "destination"){
-        string args;
-        getline(ss,args);
-        stringstream ssargs(args);
 
         if(wordsCounter(args) == 2){
             string portName;
@@ -193,7 +192,6 @@ bool Controller::pharseLineForErrors(const string &usrLine) {
             Port* p = Model::getInstance().getPortByName(portName);
             if(p){
                 if(speed > 0){
-                    s->insertCommandToQueue(usrLine);
                     return true;
                 } else
                     cerr << "speed argument illegal" << endl;
@@ -210,8 +208,57 @@ bool Controller::pharseLineForErrors(const string &usrLine) {
             //todo exceptopn
             return false;
         }
+//loat_at-----------------------------------------------------------------------
+    }else if(command == "load_at"){
+        string portName;
 
+        if(s->getType() == "Freighter"){
+            if(wordsCounter(args) == 1){
+                ssargs >> portName;
+                Port* p = Model::getInstance().getPortByName(portName);
+                if(p){
+                    return  true;
+                }else{
+                    cerr << "port name ERROR";
+                    //todo exception
+                    return false;
+                }
+            }else{
+                cerr << "need more arguments " << endl;
+                //todo exception
+                return false;
+            }
+
+        } else{
+            //todo exception
+            cerr << "'load_at' command is only for Freighter ship" << endl;
+            return false;
+        }
+//unloat_at-----------------------------------------------------------------------
+    }else if(command == "unload_at"){
+        string portName;
+        int containers_to_load;
+        if(s->getType() == "Freighter"){
+            if(wordsCounter(args) == 2){
+                ssargs >> portName;
+                ssargs >> containers_to_load;
+                Port* p = Model::getInstance().getPortByName(portName);
+                if(p){
+                    if(containers_to_load >= 0)
+                        return  true;
+                }else{
+                    cerr << "port name ERROR";
+                    //todo exception
+                    return false;
+                }
+            }
+        }else{
+            //todo exception
+            cerr << "'unload_at' command is only for Freighter ship" << endl;
+            return false;
+        }
     }
+
 
     return false;
 

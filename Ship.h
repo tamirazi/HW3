@@ -19,7 +19,7 @@ protected:
     Polar_vector angle;
     Cartesian_vector destination;
     SimObject* sim_obj_dest;
-    vector<string> missions;
+    deque<string> missions;
     bool busy = false;
 public:
 

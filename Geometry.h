@@ -2,6 +2,9 @@
 #include <iomanip>
 using namespace std;
 //----------------------------------------------------
+// prograss from one point to another
+
+//----------------------------------------------------
 // angle units conversion functions
 double to_radians(double theta_d);
 double to_degrees(double theta_r);
@@ -34,3 +37,5 @@ typedef struct Polar_vector {
     double r;
     double theta;
 } Polar_vector;
+
+const Point prograss(const Point& from,const Point& to , int speed);

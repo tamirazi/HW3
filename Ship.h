@@ -16,7 +16,13 @@ protected:
     status ship_status;
     double fuel , speed , consumption;
     Polar_vector angle;
-    Cartesian_vector destination;
+    Point destination;
+public:
+    const Point &getDestination() const;
+
+    void setDestination(const Point &destination);
+
+protected:
     SimObject* sim_obj_dest;
     vector<string> missions;
     bool busy = false;
@@ -25,13 +31,14 @@ public:
     Ship(const string& name ,const string& type,const Point& p);
     void stop();
     virtual void show_Status();
-    void movingToDestintion(const Polar_vector &destination , double speed);
+   // void movingToDestintion(const Polar_vector &destination , double speed);
     void movingOnCourse(const Cartesian_vector &angle, double speed);
     double getFuel() const;
     void setSim_obj_dest(SimObject *sim_obj_dest);
     void setFuel(double fuel);
     double getSpeed() const;
     void setSpeed(double speed);
+    void setLocation(const Point& newLoc);
     status getShip_status() const;
     void setShip_status(status ship_status);
     virtual void playCommand()= 0;

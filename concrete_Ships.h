@@ -17,6 +17,7 @@ private:
     int containers_capacity;
     int containers_to_load = 0;
     int containers_to_unload = 0;
+    queue<string> tasks;
 public:
     Freighter(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
         setFuel(FREIGHTER_FUEL_CAPACITY);
@@ -25,11 +26,11 @@ public:
 
     void update(){
         cout << "Freighter update"<<endl;
-        printMissions();
+        playCommand();
     }//update the ship missions
     void playCommand(); // plays another command from vector
     void show_Status() {//show freighter status
-        cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
+        cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << Ship::getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
     }
 
@@ -60,11 +61,15 @@ public:
     int getContainers_capacity() const {
         return containers_capacity;
     }
+
+    const string& getRatedCommand();
 };
+
 class Patrol :public Ship{
 private:
     int resistance;//local variables
     int containers_capacity;
+    queue<string> tasks;
 public:
     Patrol(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
         setFuel(PATROL_FUEL_CAPACITY);
@@ -72,6 +77,7 @@ public:
     };
     void update(){
         cout << "Patrol update"<<endl;
+        playCommand();
     }//update the ship missions
     void playCommand();
     void show_Status() {//show patrol status
@@ -87,6 +93,7 @@ public:
         return containers_capacity;
     }
 };
+
 class Cruiser :public Ship{
 private:
     int attacking_force;//local variables

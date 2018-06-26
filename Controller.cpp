@@ -68,12 +68,12 @@ void Controller::run() {
             point = point.substr(1,point.size());
             stringstream location(point);
             location >> x;
-            getline(ss,point , ' ');
-            location.str(point);
-            location >> y;
+            getline(ss,point , ')');
+            stringstream location2(point);
+            location2 >> y;
             ss >> resistance;
             ss >> secondArg;
-            Model::getInstance().addShip(shipFactory::getInstance().createNewShip(name,type,Point(x,y),secondArg));//creating the ship with ship factory and adding it into the model
+            Model::getInstance().addShip(shipFactory::getInstance().createNewShip(name,type,Point(x,y),resistance));//creating the ship with ship factory and adding it into the model
         }else if(user_command == "go"){
             // up timer + 1
 
@@ -87,12 +87,16 @@ void Controller::run() {
             string command;
             ss >> command;
             Ship* s = Model::getInstance().getShipByName(user_command); //get the ship by his name from user command
+            if(!s){
+                cout << "the ship was not allocate" <<endl;
+                exit(1);
+            }
             if(command == "stop"){
                 s->stop();
             }else if(parseLineForErrors(ss.str())){
-                s->insertMissionToVector(ss.str());//insert the command into ship queue
-            }
-
+                string mission  = line.erase(0,user_command.size()+1).c_str();
+                s->insertMissionToVector(mission);//insert the command into ship queue
+            }else{cerr << "There has been some problem the command didn't insert into queue" << endl;}
         }
         //---------------------------------------
         if(user_command == "exit"){
@@ -100,10 +104,7 @@ void Controller::run() {
             return;
             //check for memory leak
         }
-
     }
-
-
 }
 
 void Controller::Input(const string &portsFile) {
@@ -148,6 +149,10 @@ bool Controller::parseLineForErrors(const string &usrLine) {
     getline(ss , args);
     stringstream ssargs(args);
     Ship* s = Model::getInstance().getShipByName(name);
+    if(!s){
+        cout << "the ship was not allocate" <<endl;
+        exit(1);
+    }
 //course-----------------------------------------------------------------------
     if(command == "course"){
         if(wordsCounter(args) == 2) {//2 args after course
@@ -199,16 +204,14 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                 //todo exception
                 return false;
             }
-
         }else{
-            cerr << "needed more arguments " << endl;
+            cerr << "Wrong list of arguments " << endl;
             //todo exceptopn
             return false;
         }
 //loat_at-----------------------------------------------------------------------
     }else if(command == "load_at"){
         string portName;
-
         if(s->getType() == "Freighter"){
             if(wordsCounter(args) == 1){
                 ssargs >> portName;
@@ -221,7 +224,7 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                     return false;
                 }
             }else{
-                cerr << "need more arguments " << endl;
+                cerr << "Wrong list of arguments " << endl;
                 //todo exception
                 return false;
             }

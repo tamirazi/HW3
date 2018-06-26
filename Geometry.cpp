@@ -30,7 +30,7 @@ void Cartesian_vector::operator=(const Polar_vector& pv)
 Polar_vector::Polar_vector(const Cartesian_vector& cv) {
     r = sqrt((cv.delta_x * cv.delta_x) + (cv.delta_y * cv.delta_y));
     /* atan2 will return a negative angle for Quadrant III, IV, must translate to I, II */
-    theta = atan2(cv.delta_y, cv.delta_x);
+    theta = atan2(cv.delta_x, cv.delta_y);
     if (theta < 0.)
         theta = 2. * pi + theta; // normalize theta positive
 }
@@ -43,7 +43,7 @@ void Polar_vector::operator=(const Cartesian_vector& cv)
 {
     r = sqrt((cv.delta_x * cv.delta_x) + (cv.delta_y * cv.delta_y));
     /* atan2 will return a negative angle for Quadrant III, IV, must translate to I, II */
-    theta = atan2(cv.delta_y, cv.delta_x);
+    theta = atan2(cv.delta_x, cv.delta_y);
     if (theta < 0.)
         theta = 2. * pi + theta; // normalize theta positive
 }
@@ -66,4 +66,16 @@ void Point::print() const
 bool Point::operator==(const Point & rhs)
 {
     return x == rhs.x && y == rhs.y;
+}
+
+const Point prograss(const Point& from,const Point& to , int speed){
+    Point ans(0,0);
+    Cartesian_vector cv;
+    cv.delta_x = to.x - from.x;
+    cv.delta_y = to.y - from.y;
+    Polar_vector pv(cv);
+    double direction = to_degrees(pv.theta);
+    ans.x = from.x + cos(direction*pi/180)*speed;
+    ans.y = from.y + sin(direction*pi/180)*speed;
+    return Point(ans.x,ans.y);
 }

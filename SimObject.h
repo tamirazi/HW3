@@ -10,6 +10,7 @@ class SimObject {
 private:
     string name;
     string type;
+protected:
     Point location;
 
 public:

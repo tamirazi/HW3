@@ -31,7 +31,7 @@ Display size: 25, scale: 2.00, origin: (-10.00, -10.00)
  -10 . . . . . . . . . . . . . . . . . . . . . . . . . 
    -10    -4     2     8    14    20    26    32    38
 
-Time 0: Enter command: create Colombo Freighter (-5.0 20.0) 1000 8
+Time 0: Enter command: create Colombo Freighter (-5.0 20.0) 8 1000
 Time 0: Enter command: Colombo destination Yokohama 10
 Time 0: Enter command: Emma load_at PearlHarbor
 Time 0: Enter command: Emma unload_at Valdez 100

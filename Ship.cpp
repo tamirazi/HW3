@@ -10,11 +10,11 @@ void Ship::stop() {//stop the ship and clear the missions vector
     ship_status = Stopped;
     missions.clear();
 }
-void Ship::movingToDestintion(const Polar_vector &destination , double newSpeed) {
-    ship_status = Moving_to;
-    Ship::destination = destination;
-    speed = newSpeed;
-}
+//void Ship::movingToDestintion(const Polar_vector &destination , double newSpeed) {
+//    ship_status = Moving_to;
+//    Ship::destination = destination;
+//    speed = newSpeed;
+//}
 void Ship::movingOnCourse(const Cartesian_vector &angle , double newSpeed) {
     Ship::angle = angle;
     speed = newSpeed;
@@ -47,7 +47,7 @@ void Ship::show_Status() {
             cout <<" Dead in the water"<< endl;
             break;
         case Moving_to:
-            cout <<  " Moving to (" << destination.delta_x << " , " << destination.delta_y
+            cout <<  " Moving to (" << destination.x << " , " << destination.x
                  << " ) " << "on course " << endl;
             break;
         case Moving_on_course:
@@ -61,6 +61,7 @@ void Ship::show_Status() {
 void Ship::setSim_obj_dest(SimObject *sim_obj_dest) {
     Ship::sim_obj_dest = sim_obj_dest;
 }
+
 void Ship::printMissions(){
     vector<string>::iterator iter = missions.begin();
     for(;iter!= missions.end();++iter){
@@ -70,6 +71,18 @@ void Ship::printMissions(){
 
 void Ship::insertMissionToVector(const string &command) {//insert a string that represent a command into a specific ship queue
     missions.push_back(command);
+}
+
+void Ship::setLocation(const Point &newLoc) {
+    SimObject::location = newLoc;
+}
+
+const Point &Ship::getDestination() const {
+    return destination;
+}
+
+void Ship::setDestination(const Point &destination) {
+    Ship::destination = destination;
 }
 
 /*void Ship::pharseLineFromVec() {

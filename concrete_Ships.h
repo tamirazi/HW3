@@ -20,7 +20,7 @@ private:
     queue<string> tasks;
 public:
     Freighter(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
-        setFuel(FREIGHTER_FUEL_CAPACITY);
+        Ship::setFuel(FREIGHTER_FUEL_CAPACITY);
         setSpeed(0);
     };
 
@@ -30,7 +30,7 @@ public:
     }//update the ship missions
     void playCommand(); // plays another command from vector
     void show_Status() {//show freighter status
-        cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << Ship::getFuel() << " kl, resistance: " << resistance;
+        cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
     }
 

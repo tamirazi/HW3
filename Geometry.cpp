@@ -1,6 +1,7 @@
 #include "Geometry.h"
 #include <cmath>
 #include <ctgmath>
+#define PI 3.14159265
 const double pi = 2. * atan2(1., 0.);
 double to_radians(double theta_d)
 {
@@ -75,7 +76,8 @@ const Point prograss(const Point& from,const Point& to , int speed){
     cv.delta_y = to.y - from.y;
     Polar_vector pv(cv);
     double direction = to_degrees(pv.theta);
-    ans.x = from.x + cos(direction*pi/180)*speed;
-    ans.y = from.y + sin(direction*pi/180)*speed;
+    ans.x = (float)(from.x + sin(direction*pi/180)*speed);
+    ans.y = (float)(from.y + cos(direction*pi/180)*speed);
+    cout << ans.x << " " << ans.y << endl;
     return Point(ans.x,ans.y);
 }

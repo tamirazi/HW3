@@ -20,10 +20,10 @@ void Ship::movingOnCourse(const Cartesian_vector &angle , double newSpeed) {
     speed = newSpeed;
     ship_status = Moving_on_course;
 }
-double Ship::getFuel() const {
+float Ship::getFuel() const {
     return fuel;
 }
-void Ship::setFuel(double fuel) {
+void Ship::setFuel(float fuel) {
     Ship::fuel = fuel;
 }
 double Ship::getSpeed() const {

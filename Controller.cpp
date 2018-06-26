@@ -95,6 +95,7 @@ void Controller::run() {
                 s->stop();
             }else if(parseLineForErrors(ss.str())){
                 string mission  = line.erase(0,user_command.size()+1).c_str();
+                cout << "insert to: " <<  s->getName() << endl;
                 s->insertMissionToVector(mission);//insert the command into ship queue
             }else{cerr << "There has been some problem the command didn't insert into queue" << endl;}
         }

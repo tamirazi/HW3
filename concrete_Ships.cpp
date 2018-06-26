@@ -14,15 +14,13 @@ void Freighter::playCommand() {
             stringstream ss(line);
             string command;
             string portName;
-            double speed;
+            int speed;
             ss  >> command;
             if(command == "destination"){
                 ss >> portName;
                 ss >> speed;
                 Port* p = Model::getInstance().getPortByName(portName);
                 if(p) {
-                    p->getLocation().print();
-                    cout << endl;
                     this->setDestination(p->getLocation());
                     setLocation(prograss(getLocation(),p->getLocation(),speed));
                 }else { cerr << "port null" << endl;}
@@ -52,8 +50,9 @@ void Patrol::playCommand() {
                 Port* p = Model::getInstance().getPortByName(portName);
                 if(p) {
                     this->setDestination(p->getLocation());
-                }
-                setLocation(prograss(getLocation(),getDestination(),speed));
+                    setLocation(prograss(getLocation(),p->getLocation(),speed));
+                }else { cerr << "port null" << endl;}
+
             }
 
         } else return;

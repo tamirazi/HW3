@@ -3,7 +3,7 @@
 //
 
 #include "Model.h"
-
+#include "Ship.h"
 Model *Model::model = nullptr;
 
 Model & Model::getInstance() {
@@ -60,8 +60,10 @@ shared_ptr<SimObject> Model::getObjectByName(const string &name) {//returns a po
 }
 
 Ship * Model::getShipByName(const string &name) {// get ship object from simobject vector by name
+    string tmp = name;
+    transform(tmp.begin(),tmp.end(),tmp.begin(),::tolower);
     if(thereIsSuchShip(name)){
-        Ship* ship = dynamic_cast<Ship*>(getObjectByName(name).get());
+        Ship* ship = dynamic_cast<Ship*>(getObjectByName(tmp).get());
         if(ship){
             //shared_ptr<Ship> s(ship);
             return ship;
@@ -71,7 +73,9 @@ Ship * Model::getShipByName(const string &name) {// get ship object from simobje
 }
 
 Port * Model::getPortByName(const string &name) {
-    Port* port = dynamic_cast<Port*>(getObjectByName(name).get());
+    string tmp =name;
+    transform(tmp.begin(),tmp.end(),tmp.begin(),::tolower);
+    Port* port = dynamic_cast<Port*>(getObjectByName(tmp).get());
     if(port){
         //shared_ptr<Port> elm(port);
         return port;
@@ -82,7 +86,6 @@ Port * Model::getPortByName(const string &name) {
 
 void Model::go() {
     timer++;
-
     for( auto &s : simVector){
         s->update();
     }

@@ -4,7 +4,6 @@
 
 #include <fstream>
 #include "Controller.h"
-#include <algorithm>
 
 
 Controller::Controller() {
@@ -85,15 +84,13 @@ void Controller::run() {
         //Ships Command
         if(Model::getInstance().thereIsSuchShip(user_command)){//if there is such ship
             //if user command = ship name;
-            shared_ptr<SimObject> ship = Model::getInstance().getObjectByName(user_command);//get reference to ship
             string command;
             ss >> command;
-            Ship* s = Model::getInstance().getShipByName(user_command); //test to downcast Simobj to ship
+            Ship* s = Model::getInstance().getShipByName(user_command); //get the ship by his name from user command
             if(command == "stop"){
                 s->stop();
-            }else if(pharseLineForErrors(ss.str())){
-                ship->insertCommandToQueue(ss.str());//insert the command into ship queue
-
+            }else if(parseLineForErrors(ss.str())){
+                s->insertMissionToVector(ss.str());//insert the command into ship queue
             }
 
         }
@@ -138,10 +135,10 @@ void Controller::Input(const string &portsFile) {
 
 }
 
-bool Controller::pharseLineForErrors(const string &usrLine) {
+bool Controller::parseLineForErrors(const string &usrLine) {
     //this function pharsing the line from the user for checking errors
     //if the command are good
-    //add the command to specipic ship queue
+    //add the command to specific ship queue
 
     string command , name;
     stringstream ss(usrLine);
@@ -198,13 +195,13 @@ bool Controller::pharseLineForErrors(const string &usrLine) {
                 return false;
             }
             else{
-                cerr << "port name ERROR";
+                cerr << "port name ERROR"<<endl;
                 //todo exception
                 return false;
             }
 
         }else{
-            cerr << "nedd more arguments " << endl;
+            cerr << "needed more arguments " << endl;
             //todo exceptopn
             return false;
         }
@@ -219,7 +216,7 @@ bool Controller::pharseLineForErrors(const string &usrLine) {
                 if(p){
                     return  true;
                 }else{
-                    cerr << "port name ERROR";
+                    cerr << "port name ERROR"<<endl;
                     //todo exception
                     return false;
                 }
@@ -247,7 +244,7 @@ bool Controller::pharseLineForErrors(const string &usrLine) {
                     if(containers_to_load >= 0)
                         return  true;
                 }else{
-                    cerr << "port name ERROR";
+                    cerr << "port name ERROR"<< endl;
                     //todo exception
                     return false;
                 }

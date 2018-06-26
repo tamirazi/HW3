@@ -2,7 +2,7 @@
 // Created by tamir on 6/18/18.
 //
 #include "Ship.h"
-#include "Model.h"
+
 
 Ship::Ship(const string& name ,const string& type,const Point& p ):SimObject(name,type,p),ship_status (Stopped),fuel(0),speed(0){}
 void Ship::stop() {//stop the ship and clear the missions vector
@@ -61,8 +61,18 @@ void Ship::show_Status() {
 void Ship::setSim_obj_dest(SimObject *sim_obj_dest) {
     Ship::sim_obj_dest = sim_obj_dest;
 }
+void Ship::printMissions(){
+    vector<string>::iterator iter = missions.begin();
+    for(;iter!= missions.end();++iter){
+        cout << iter.operator*() << endl;
+    }
+}
 
-void Ship::pharseLineFromVec() {
+void Ship::insertMissionToVector(const string &command) {//insert a string that represent a command into a specific ship queue
+    missions.push_back(command);
+}
+
+/*void Ship::pharseLineFromVec() {
     string args , portName;
     if(!missions.empty() && !busy){
         busy = true; //after pharse the command the ship will be busy
@@ -127,4 +137,5 @@ void Ship::pharseLineFromVec() {
         }
     }
 }
+ */
 

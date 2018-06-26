@@ -23,8 +23,8 @@ int main(int argc,char* argv[]) {
 //    Time 0: Enter command: create Emma Freighter (30.00, 30.00) 1000 8
 //    Time 0: Enter command: create Xerxes Cruiser (25.00, 25.00) 6 2
 //    Time 0: Enter command: create Shikishima Patrol_boat (0.0 0.0) 10
-    if(argc > 2){
-        cout << "Error: Usage needed ./<Prog> <Ports_Input_File> ";
+    if(argc != 2){
+        cout << "Error: Usage needed ./<Prog> <Ports_Input_File> " << endl;
         return 1;
     }else{
         Controller c;

@@ -6,6 +6,8 @@
 #define HW3_CONCRETE_SHIPS_H
 
 #include <queue>
+#include "Ship.h"
+
 
 enum { FREIGHTER_FUEL_CAPACITY = 500, FRIEGHTER_MAXSPEED = 40,PATROL_FUEL_CAPACITY = 900, PATROL_MAXSPEED = 15, CRUSIER_MAXSPEED = 75};//fuel and speed limits
 
@@ -20,13 +22,12 @@ public:
         setFuel(FREIGHTER_FUEL_CAPACITY);
         setSpeed(0);
     };
-    void insertCommandToQueue(const string& command){//insert string to queue
-        missions.push_back(command);
-    }
+
     void update(){
         cout << "Freighter update"<<endl;
-        pharseLineFromVec();
+        printMissions();
     }//update the ship missions
+    void playCommand(); // plays another command from vector
     void show_Status() {//show freighter status
         cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
@@ -69,11 +70,10 @@ public:
         setFuel(PATROL_FUEL_CAPACITY);
         setSpeed(0);
     };
-    void insertCommandToQueue(const string& command){//insert string to queue
-        missions.push_back(command); }
     void update(){
         cout << "Patrol update"<<endl;
     }//update the ship missions
+    void playCommand();
     void show_Status() {//show patrol status
         cout <<getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
@@ -92,12 +92,10 @@ private:
     int attacking_force;//local variables
 public:
     Cruiser(const string& name ,const string& type, const Point& p , int force  ):Ship(name ,type, p) , attacking_force(force) {};
-    void insertCommandToQueue(const string& command){//insert string to queue
-        missions.push_back(command);
-    }
     void update(){
         cout << "Cruiser update"<<endl;
     }//update the ship missions
+    void playCommand();
     void show_Status() {//show cruiser status
         cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), force: " << attacking_force;
         Ship::show_Status();

@@ -7,7 +7,6 @@
 #define HW3_SHIP_H
 #include "SimObject.h"
 #include "Port.h"
-#include "Ship.h"
 #include <sstream>
 #include <queue>
 enum status {Stopped , Docked , Dead_in_the_water ,
@@ -19,7 +18,7 @@ protected:
     Polar_vector angle;
     Cartesian_vector destination;
     SimObject* sim_obj_dest;
-    deque<string> missions;
+    vector<string> missions;
     bool busy = false;
 public:
 
@@ -35,7 +34,9 @@ public:
     void setSpeed(double speed);
     status getShip_status() const;
     void setShip_status(status ship_status);
-    void pharseLineFromVec();
+    virtual void playCommand()= 0;
+    void printMissions();
+    void insertMissionToVector(const string& command);
 
 };
 

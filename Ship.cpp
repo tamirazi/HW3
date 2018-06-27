@@ -2,7 +2,7 @@
 // Created by tamir on 6/18/18.
 //
 #include "Ship.h"
-
+#include "Model.h"
 
 Ship::Ship(const string& name ,const string& type,const Point& p ):SimObject(name,type,p),ship_status (Stopped),fuel(0),speed(0){}
 void Ship::stop() {//stop the ship and clear the missions vector
@@ -10,16 +10,20 @@ void Ship::stop() {//stop the ship and clear the missions vector
     ship_status = Stopped;
     missions.clear();
 }
-//void Ship::movingToDestintion(const Polar_vector &destination , double newSpeed) {
-//    ship_status = Moving_to;
-//    Ship::destination = destination;
-//    speed = newSpeed;
-//}
-void Ship::movingOnCourse(const Cartesian_vector &angle , double newSpeed) {
-    Ship::angle = angle;
+void Ship::movingToDestintion(const Point &destination , float newSpeed) {
+    ship_status = Moving_to;
+    Ship::destination = destination;
+    Cartesian_vector cv;
+    cv.delta_x = destination.x - getLocation().x;
+    cv.delta_y = destination.y - getLocation().y;
+    deg = cv;
     speed = newSpeed;
-    ship_status = Moving_on_course;
 }
+//void Ship::movingOnCourse(const Cartesian_vector &angle , float newSpeed) {
+//    Ship::angle = angle;
+//    speed = newSpeed;
+//    ship_status = Moving_on_course;
+//}
 float Ship::getFuel() const {
     return fuel;
 }
@@ -29,7 +33,7 @@ void Ship::setFuel(float fuel) {
 double Ship::getSpeed() const {
     return speed;
 }
-void Ship::setSpeed(double speed) {
+void Ship::setSpeed(float speed) {
     Ship::speed = speed;
 }
 status Ship::getShip_status() const {
@@ -47,8 +51,7 @@ void Ship::show_Status() {
             cout <<" Dead in the water"<< endl;
             break;
         case Moving_to:
-            cout <<  " Moving to (" << destination.x << " , " << destination.x
-                 << " ) " << "on course " << endl;
+            cout << ", Moving to " <<getDestinationName() << " on course " << to_degrees(deg.theta) << " deg," << getSpeed() <<  " nm/hr" ;
             break;
         case Moving_on_course:
             cout << " Moving to " << sim_obj_dest->getName() << " on course " << endl;
@@ -83,6 +86,39 @@ const Point &Ship::getDestination() const {
 
 void Ship::setDestination(const Point &destination) {
     Ship::destination = destination;
+}
+
+float Ship::getConsumption() const {
+    return consumption;
+}
+
+const string &Ship::getDestinationName() const {
+    return destinationName;
+}
+
+void Ship::setDestinationName(const string &destination) {
+    destinationName = destination;
+}
+
+void Ship::goToDestination(const string& line) {
+    cout << line << endl;
+    stringstream ss(line);
+    string command;
+    string portName;
+    int speed;
+    ss  >> command;
+    if(command == "destination") {
+        ss >> portName;
+        ss >> speed;
+        Port *p = Model::getInstance().getPortByName(portName);
+        if (p) {
+            this->setDestination(p->getLocation());
+            setLocation(prograss(getLocation(), p->getLocation(), speed));
+            setDestinationName(p->getName());
+            setFuel(getFuel() - getConsumption());
+            movingToDestintion(p->getLocation(), speed);
+        } else { cerr << "port null" << endl; }
+    }
 }
 
 /*void Ship::pharseLineFromVec() {

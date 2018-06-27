@@ -1,8 +1,7 @@
 #include <iostream>
 #include <iomanip>
 using namespace std;
-//----------------------------------------------------
-// prograss from one point to another
+
 
 //----------------------------------------------------
 // angle units conversion functions
@@ -37,5 +36,6 @@ typedef struct Polar_vector {
     double r;
     double theta;
 } Polar_vector;
-
-const Point prograss(const Point& from,const Point& to , int speed);
+//----------------------------------------------------
+// prograss from one point to another
+const Point prograss(const Point& from,const Point& to, float speed);

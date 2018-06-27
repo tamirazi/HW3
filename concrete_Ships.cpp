@@ -9,24 +9,8 @@ void Freighter::playCommand() {
     }else{
         if(!missions.empty()){//there is another mission
             //get the highest priority from vector
-            string line = missions.begin().operator*().c_str();
-            cout << line << endl;
-            stringstream ss(line);
-            string command;
-            string portName;
-            int speed;
-            ss  >> command;
-            if(command == "destination"){
-                ss >> portName;
-                ss >> speed;
-                Port* p = Model::getInstance().getPortByName(portName);
-                if(p) {
-                    this->setDestination(p->getLocation());
-                    setLocation(prograss(getLocation(),p->getLocation(),speed));
-                }else { cerr << "port null" << endl;}
-
-            }
-
+            string command = getCommandByPriorety();
+            goToDestination(command);
         } else return;
     }
 }
@@ -42,7 +26,7 @@ void Patrol::playCommand() {
             stringstream ss(line);
             string command;
             string portName;
-            double speed;
+            float speed;
             ss  >> command;
             if(command == "destination"){
                 ss >> portName;
@@ -51,6 +35,8 @@ void Patrol::playCommand() {
                 if(p) {
                     this->setDestination(p->getLocation());
                     setLocation(prograss(getLocation(),p->getLocation(),speed));
+                    setFuel(getFuel()-getConsumption());
+                    movingToDestintion(p->getLocation(),speed);
                 }else { cerr << "port null" << endl;}
 
             }
@@ -59,10 +45,22 @@ void Patrol::playCommand() {
     }
 }
 
+const string &Patrol::getCommandByPriorety() {
+    return missions.begin().operator*();
+}
+
 void Cruiser::playCommand() {
 
 }
 
-const string& Freighter::getRatedCommand() {
+const string &Cruiser::getCommandByPriorety() {
+    return missions.begin().operator*();
+}
+
+
+const string &Freighter::getCommandByPriorety() {
+    vector<string>::iterator iter = missions.begin();
+    for(;iter != missions.end() ; ++iter){
+    }
     return missions.begin().operator*();
 }

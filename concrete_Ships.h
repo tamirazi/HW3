@@ -22,6 +22,7 @@ public:
     Freighter(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
         Ship::setFuel(FREIGHTER_FUEL_CAPACITY);
         setSpeed(0);
+        consumption = 0.1;
     };
 
     void update(){
@@ -32,8 +33,9 @@ public:
     void show_Status() {//show freighter status
         cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
+        cout << endl;
     }
-
+    const string& getCommandByPriorety();
     int getResistance() const {
         return resistance;
     }
@@ -61,8 +63,6 @@ public:
     int getContainers_capacity() const {
         return containers_capacity;
     }
-
-    const string& getRatedCommand();
 };
 
 class Patrol :public Ship{
@@ -74,12 +74,14 @@ public:
     Patrol(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
         setFuel(PATROL_FUEL_CAPACITY);
         setSpeed(0);
+        consumption = 0.2;
     };
     void update(){
         cout << "Patrol update"<<endl;
         playCommand();
     }//update the ship missions
     void playCommand();
+    const string& getCommandByPriorety();
     void show_Status() {//show patrol status
         cout <<getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
@@ -103,6 +105,7 @@ public:
         cout << "Cruiser update"<<endl;
     }//update the ship missions
     void playCommand();
+    const string& getCommandByPriorety();
     void show_Status() {//show cruiser status
         cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), force: " << attacking_force;
         Ship::show_Status();

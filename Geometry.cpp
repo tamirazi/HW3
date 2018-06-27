@@ -69,15 +69,15 @@ bool Point::operator==(const Point & rhs)
     return x == rhs.x && y == rhs.y;
 }
 
-const Point prograss(const Point& from,const Point& to , int speed){
+const Point prograss(const Point& from,const Point& to , float speed){
     Point ans(0,0);
     Cartesian_vector cv;
     cv.delta_x = to.x - from.x;
     cv.delta_y = to.y - from.y;
     Polar_vector pv(cv);
     double direction = to_degrees(pv.theta);
-    ans.x = (float)(from.x + sin(direction*pi/180)*speed);
-    ans.y = (float)(from.y + cos(direction*pi/180)*speed);
+    ans.x = from.x + sin(direction*pi/180)*speed;
+    ans.y = from.y + cos(direction*pi/180)*speed;
     cout << ans.x << " " << ans.y << endl;
     return Point(ans.x,ans.y);
 }

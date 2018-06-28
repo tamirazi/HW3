@@ -29,7 +29,7 @@ int main(int argc,char* argv[]) {
     }else{
         Controller c;
         c.Input(argv[1]);
-        Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Ajax","Cruiser",Point(15.00, 15.00),6,1));
+        Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Ajax","Cruiser",Point(15.00, 15.00),6,2));
         Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Emma","Freighter",Point(30.00, 30.00),8,1000));
         Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Xerxes","Cruiser",Point(25.00, 25.00) ,6,2));
         Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Shikishima","Patrol",Point(0.0,0.0),10));

@@ -19,11 +19,11 @@ void Ship::movingToDestintion(const Point &destination , float newSpeed) {
     deg = cv;
     speed = newSpeed;
 }
-//void Ship::movingOnCourse(const Cartesian_vector &angle , float newSpeed) {
-//    Ship::angle = angle;
-//    speed = newSpeed;
-//    ship_status = Moving_on_course;
-//}
+void Ship::movingOnCourse(float angle , float newSpeed) {
+    course = angle;
+    speed = newSpeed;
+    ship_status = Moving_on_course;
+}
 float Ship::getFuel() const {
     return fuel;
 }
@@ -51,10 +51,10 @@ void Ship::show_Status() {
             cout <<" Dead in the water"<< endl;
             break;
         case Moving_to:
-            cout << ", Moving to " <<getDestinationName() << " on course " << to_degrees(deg.theta) << " deg," << getSpeed() <<  " nm/hr" ;
+            cout << ", Moving to " <<destinationName<< " on course " << to_degrees(deg.theta) << " deg," << speed <<  " nm/hr" ;
             break;
         case Moving_on_course:
-            cout << " Moving to " << destinationName << " on course " << endl;
+            cout << " Moving on course " << course << " speed: " << speed << " nm/hr " <<  endl;
             break;
         case Docked:
             cout << " Docked at " << destinationName << endl;
@@ -117,7 +117,6 @@ void Ship::goToDestination(const string& line) {
             setDestinationName(p->getName());
             setFuel(getFuel() - getConsumption());
             movingToDestintion(p->getLocation(), speed);
-
         } else { cerr << "port null" << endl; }
     }
 }
@@ -126,13 +125,14 @@ void Ship::goOnCourse(const string &line) {
     cout << line << endl;
     stringstream ss(line);
     string command;
-    double degree;
+    float degree;
     float speed;
     ss  >> command;
     if(command == "course") {
         ss >> degree;
         ss >> speed;
         setLocation(prograssByCourse(getLocation(),degree,speed));
+        movingOnCourse(degree,speed);
     }
 }
 
@@ -141,71 +141,7 @@ void Ship::dockAtPort() {
     setSpeed(0);
 }
 
-
-/*void Ship::pharseLineFromVec() {
-    string args , portName;
-    if(!missions.empty() && !busy){
-        busy = true; //after pharse the command the ship will be busy
-        string command , name;
-        stringstream ss(missions.front());
-        missions.pop_front();
-        getline(ss , name , ' ');
-        getline(ss , command , ' ');
-        Ship* s = Model::getInstance().getShipByName(name); //downcast from simObj to Ship
-//course-----------------------------------------------------------------------
-        if(command == "course"){
-            getline(ss , args);
-            stringstream ssargs(args);
-            double angle, speed;
-            ssargs >> angle;
-            ssargs >> speed;
-            Polar_vector* vec = new Polar_vector();
-            vec->theta = angle;
-            s->movingOnCourse(*vec , speed);
-            s->setShip_status(Moving_on_course);
-//position-----------------------------------------------------------------------
-        }else if( command == "position"){
-            getline(ss,args);
-            stringstream ssargs(args);
-            double x , y , speed;
-            ssargs >> x >> y >> speed;
-            Cartesian_vector* vec = new Cartesian_vector();
-            vec->delta_x = x;
-            vec->delta_y = y;
-            s->movingToDestintion(*vec , speed);
-            s->setShip_status(Moving_to);
-//destination-----------------------------------------------------------------------
-        }else if(command == "destination"){
-            getline(ss,args);
-            stringstream ssargs(args);
-            double speed;
-            ssargs >> portName >> speed;
-            Port* p = Model::getInstance().getPortByName(portName);
-            if(p){
-                Cartesian_vector* vec = new Cartesian_vector();
-                vec->delta_x = p->getLocation().x;
-                vec->delta_y = p->getLocation().y;
-                s->movingToDestintion(*vec , speed);
-                s->setShip_status(Moving_on_course);
-                s->setSim_obj_dest(p);
-            }//there is a port with that name
-//loat_at-----------------------------------------------------------------------
-        }else if(command == "load_at"){
-            getline(ss,args);
-            stringstream ssargs(args);
-            ssargs >> portName;
-            Port* p = Model::getInstance().getPortByName(portName);
-            if(p){
-                Freighter* f = dynamic_cast<Freighter*>(Model::getInstance().getShipByName(name));
-                if(f){
-                    //
-                }
-
-            }
-
-
-        }
-    }
+bool Ship::isArrived() {
+    return getLocation().x == getDestination().x && getLocation().y == getDestination().y;
 }
- */
 

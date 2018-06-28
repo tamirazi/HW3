@@ -87,7 +87,7 @@ string Patrol::findNextPort(vector<string>& portsLeft) {
 
     map<double , string , greater<double> > distances;
 
-    for (int i = 0; i <portsLeft.size() ; ++i) {
+    for (unsigned int i = 0; i <portsLeft.size() ; ++i) {
         if(portsLeft[i] != destinationName){
             Port *p = dynamic_cast<Port*>(Model::getInstance().getPortByName(portsLeft[i]));
             double  dis = distance(getLocation() , p->getLocation());
@@ -106,16 +106,13 @@ const string Patrol::getCommandByPriority() {
     return missions.begin().operator*();
 }
 
-bool Patrol::isArrived() {
-    if(getLocation().x == getDestination().x && getLocation().y == getDestination().y)
-        return true;
-    return false;
-}
-
 void Cruiser::playCommand() {
     if(!missions.empty()){
         string line = getCommandByPriority();
-        goOnCourse(line);
+        if(line != ""){
+            goOnCourse(line);
+        }
+
     }else { return;}
 }
 
@@ -132,7 +129,7 @@ const string Cruiser::getCommandByPriority() {
         if(!gotACommand && command == "course"){
             gotACommand =true;
             line = iter.operator*().c_str();
-        }else{
+        }else if(command != "attack"){
             iter = missions.erase(iter);
         }
     }
@@ -146,15 +143,52 @@ void Cruiser::attackShips() {
         string command;
         ss >>command;
         if(command == "attack"){
+            cout << iter.operator*() << endl;
             string shipName;
             ss >> shipName;
             Ship* ship = Model::getInstance().getShipByName(shipName);
+            if(!ship){
+                cout << "the Ship was not allocated" << endl;
+                exit(1);
+            }
             if(PossibleToAttacck(getLocation(),ship->getLocation(),attacking_range)){
-                cout << " it's possible know to attack " << ship->getName() << endl;
                 if(ship->getType() == "Freighter"){
                     Freighter* freig = Model::getInstance().getFreighterShipByName(shipName);
-                    freig->getResistance();
+                    if(!freig){
+                        cout << "the Freighter was not allocated" << endl;
+                        exit(1);
+                    }
+                    if(attacking_force > freig->getResistance()){
+                        cout << "succeed attacking Freighter" << endl;
+                        attacking_force += 1;
+                        freig->setContainers_capacity(0);
+                        freig->stop();
+                    }else{
+                        cout << "the Freighter Wins" << endl;
+                        attacking_force -= 1;
+                        freig->stop();
+                    }
                 }
+                if(ship->getType() == "Patrol"){
+                    Patrol* patrol = Model::getInstance().getPatrolShipByName(shipName);
+                    if(!patrol){
+                        cout << "the Patrol was not allocated" << endl;
+                        exit(1);
+                    }
+                    if(attacking_force > patrol->getResistance()){
+                        cout << "succeed attacking Patrol" << endl;
+                        attacking_force += 1;
+                        patrol->setResistance(patrol->getResistance() -1);
+                        patrol->stop();
+                    }else{
+                        cout << "the Patrol Wins" << endl;
+                        attacking_force -= 1;
+                        patrol->setResistance(patrol->getResistance() +1);
+                        patrol->stop();
+                    }
+                }
+                iter = missions.erase(iter);
+                --iter;
             }
         }
     }

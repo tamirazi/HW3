@@ -24,7 +24,7 @@ public:
     Freighter(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
         Ship::setFuel(FREIGHTER_FUEL_CAPACITY);
         setSpeed(0);
-        consumption = 1;
+        consumption = 10;
     };
 
     void update(){
@@ -35,7 +35,7 @@ public:
     void show_Status() {//show freighter status
         cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
-        cout << endl;
+        cout << "containers:  " << containers_capacity << endl;
     }
     const string getCommandByPriority();
     int getResistance() const {
@@ -70,13 +70,12 @@ public:
 class Patrol :public Ship{
 private:
     int resistance;//local variables
-    int containers_capacity;
     deque<string> tasks;
 public:
-    Patrol(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
+    Patrol(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance) {
         setFuel(PATROL_FUEL_CAPACITY);
         setSpeed(0);
-        consumption = 2;
+        consumption = 20;
     };
     void update();
     void playCommand();
@@ -84,19 +83,15 @@ public:
     void show_Status() {//show patrol status
         cout <<getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance <<  " ";
         Ship::show_Status();
-        cout << endl;
     }
     int getResistance() const {
         return resistance;
     }
-    int getContainers_capacity() const {
-        return containers_capacity;
+    void setResistance(int resis)  {
+        resistance = resis;
     }
     void calculateTasks();
     string findNextPort(vector<string>& ports);
-    bool isArrived();
-
-
 };
 //---------------------------------------------------------------------------------------Cruiser
 class Cruiser :public Ship{

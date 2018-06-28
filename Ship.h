@@ -14,7 +14,7 @@ enum status {Stopped , Docked , Dead_in_the_water ,
 class Ship : public SimObject{
 protected:
     status ship_status;
-    float fuel , speed , consumption;
+    float fuel , speed , consumption ,course;
     string destinationName;
     Point destination;
     Polar_vector deg;
@@ -34,7 +34,7 @@ public:
     void goToDestination(const string& command);
     void goOnCourse(const string& line);
     void movingToDestintion(const Point &destination , float speed);
-    //void movingOnCourse(const Cartesian_vector &angle, float speed);
+    void movingOnCourse(float angle, float speed);
     float getFuel() const;
     void setSim_obj_dest(SimObject *sim_obj_dest);
     void setFuel(float fuel);
@@ -46,6 +46,7 @@ public:
     virtual void playCommand()= 0;
     void printMissions();
     void insertMissionToVector(const string& command);
+    bool isArrived();
     void dockAtPort();
 
 };

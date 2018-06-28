@@ -41,6 +41,7 @@ public:
     Patrol * getPatrolShipByName(const string &name);
     Freighter * getFreighterShipByName(const string &name);
     Port * getPortByName(const string &name);
+    vector<string> getAllPorts();
 };
 
 

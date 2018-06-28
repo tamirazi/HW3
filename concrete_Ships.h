@@ -5,7 +5,9 @@
 #ifndef HW3_CONCRETE_SHIPS_H
 #define HW3_CONCRETE_SHIPS_H
 
-#include <queue>
+#include <deque>
+#include <map>
+#include <algorithm>
 #include "Ship.h"
 
 
@@ -69,8 +71,7 @@ class Patrol :public Ship{
 private:
     int resistance;//local variables
     int containers_capacity;
-    int timer = 0;
-    queue<string> tasks;
+    deque<string> tasks;
 public:
     Patrol(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
         setFuel(PATROL_FUEL_CAPACITY);
@@ -81,17 +82,21 @@ public:
     void playCommand();
     const string getCommandByPriority();
     void show_Status() {//show patrol status
-        cout <<getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
+        cout <<getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance <<  " ";
         Ship::show_Status();
+        cout << endl;
     }
-
     int getResistance() const {
         return resistance;
     }
-
     int getContainers_capacity() const {
         return containers_capacity;
     }
+    void calculateTasks();
+    string findNextPort(vector<string>& ports);
+    bool isArrived();
+
+
 };
 //---------------------------------------------------------------------------------------Cruiser
 class Cruiser :public Ship{

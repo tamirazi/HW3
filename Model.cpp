@@ -123,4 +123,18 @@ int Model::getTimer() const {
     return timer;
 }
 
+vector<string> Model::getAllPorts() {
+    vector<string> ports;
+    int j = 0;
+    for (int i = 0; i <simVector.size() ; ++i) {
+        string type = simVector[i].get()->getType();
+        if( type== "Port"){
+            string portName = simVector[i].get()->getName();
+            ports.push_back(portName);
+        }
+
+    }
+    return ports;
+}
+
 

@@ -141,14 +141,6 @@ void Ship::dockAtPort() {
     setSpeed(0);
 }
 
-bool Ship::isArrived() {
-
-    if(getLocation().x == getDestination().x && getLocation().y == getDestination().y){
-        return true;
-    }
-    return false;
-
-}
 
 /*void Ship::pharseLineFromVec() {
     string args , portName;

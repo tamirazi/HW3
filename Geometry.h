@@ -43,3 +43,6 @@ const Point prograssByCourse(const Point& from,double direction , float speed);
 //----------------------------------------------------
 // check the distance to attack... if possible return true if to fare return false
 bool PossibleToAttacck(const Point& attacker,const Point& defender , float range);
+//regular distance between two points
+
+double distance(const Point& from , const Point& to);

@@ -101,3 +101,11 @@ bool PossibleToAttacck(const Point& attacker,const Point& defender , float area)
     Polar_vector pv(cv);
     return pv.r <= area;
 }
+
+double distance(const Point& from , const Point& to){
+    double x , y;
+    x = from.x - to.x;
+    y = from.y - to.y;
+    return sqrt( pow(x,2) + pow (y,2));
+
+}

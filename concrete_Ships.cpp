@@ -16,9 +16,19 @@ void Freighter::playCommand() {
 }
 
 void Patrol::playCommand() {
-    if(!tasks.empty()){
-        string command = tasks.front();
-        tasks.pop();
+
+    if(!missions.empty()){//
+        //get the highest priority from vector
+        string command = getCommandByPriority();
+        goToDestination(command);
+        if(isArrived()){
+            tasks.clear();
+            calculateTasks();
+            missions.pop_back();
+        }
+    }else if(!tasks.empty() && ship_status == Docked){
+        string command = tasks.back();
+        tasks.pop_back();
         if(command == "refuel"){
             Port *p = dynamic_cast<Port*>(Model::getInstance().getPortByName(destinationName));
             if(p){
@@ -26,55 +36,80 @@ void Patrol::playCommand() {
             } else
                 cerr << "Patrol playCommand Error to get port pointer" << endl;
 
+        }else if(command != "nothing"){
+            goToDestination(command);
         }
 
-    }else{
-        if(!missions.empty()){//there is another mission
-            //get the highest priority from vector
-            string command = getCommandByPriority();
-            goToDestination(command);
-        } else return;
     }
+
 }
 
 void Patrol::update() {
     cout << "Patrol update"<<endl;
     playCommand();
-    if(ship_status == Docked) {//arrive in Port
-        //if the ship visited all the ports
-
-        int t = timer % 3;
-        switch (t) {
-            //1st step the ship gas in port--------------------------------------------------------------------
-            case 0: {
-                Port *p = Model::getInstance().getPortByName(destinationName);
-                if (p) {
-                    tasks.push("refuel");
-                } else
-                    cout << "Patrol update : Port dynamic cast failed" << endl;
-                timer++;
-                break;
-            }
-
-                //2nd step no activity-----------------------------------------------------------------------------
-            case 1:
-                timer++;
-                break;
-                //3rd step calculate the nearst port from this location (check if the ship visited that port before)
-            case 2:
-                //building command for mission vector
-                stringstream ss;
-                //string portName = find_the_nearst_port(location , ports);
-                ss << "destination " << "portName" << " " << getSpeed();
-                missions.push_back(ss.str());
-                timer++;
-                break;
-        }
+    if(isArrived()){
+        dockAtPort();
     }
 }//update the ship missions
 
+void Patrol::calculateTasks() {
+    //get the first port here we calculate all the task to do next
+    vector<string> allPorts = Model::getInstance().getAllPorts();
+
+    while(allPorts.size() > 1){
+        //calculate next port by distance
+        string nextPort = findNextPort(allPorts);
+        auto iter = find(allPorts.begin() , allPorts.end() , nextPort);
+        allPorts.erase(iter);
+        stringstream ss;
+
+        //building command to next destination
+        ss << "destination " << nextPort << " " << getSpeed();
+
+        tasks.push_front("refuel");
+        tasks.push_front("nothing");
+        tasks.push_front(ss.str());
+    }
+
+    //now allPorts vector left with the starting port only
+    string lastPort = allPorts.front();
+    allPorts.clear();
+    stringstream ss;
+    ss << "destination " << lastPort << " " << getSpeed();
+    tasks.push_front(ss.str());
+
+
+
+
+}
+
+string Patrol::findNextPort(vector<string>& portsLeft) {
+
+    map<double , string , greater<double> > distances;
+
+    for (int i = 0; i <portsLeft.size() ; ++i) {
+        if(portsLeft[i] != destinationName){
+            Port *p = dynamic_cast<Port*>(Model::getInstance().getPortByName(portsLeft[i]));
+            double  dis = distance(getLocation() , p->getLocation());
+            distances.insert(make_pair(dis , p->getName()));
+        }
+    }
+    auto it = distances.end();
+    it--;
+    string ans = it->second;
+    return ans;
+
+
+}
+
 const string Patrol::getCommandByPriority() {
     return missions.begin().operator*();
+}
+
+bool Patrol::isArrived() {
+    if(getLocation().x == getDestination().x && getLocation().y == getDestination().y)
+        return true;
+    return false;
 }
 
 void Cruiser::playCommand() {

@@ -75,6 +75,30 @@ Ship * Model::getShipByName(const string &name) {// get ship object from simobje
     }
     return nullptr;
 }
+Freighter * Model::getFreighterShipByName(const string &name) {// get ship object from simobject vector by name
+    string tmp = name;
+    transform(tmp.begin(),tmp.end(),tmp.begin(),::tolower);
+    if(thereIsSuchShip(name)){
+        Freighter* ship = dynamic_cast<Freighter*>(getObjectByName(tmp).get());
+        if(ship){
+            //shared_ptr<Ship> s(ship);
+            return ship;
+        }
+    }
+    return nullptr;
+}
+Patrol * Model::getPatrolShipByName(const string &name) {// get ship object from simobject vector by name
+    string tmp = name;
+    transform(tmp.begin(),tmp.end(),tmp.begin(),::tolower);
+    if(thereIsSuchShip(name)){
+        Patrol* ship = dynamic_cast<Patrol*>(getObjectByName(tmp).get());
+        if(ship){
+            //shared_ptr<Ship> s(ship);
+            return ship;
+        }
+    }
+    return nullptr;
+}
 
 Port * Model::getPortByName(const string &name) {
     string tmp =name;

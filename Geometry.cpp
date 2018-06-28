@@ -69,7 +69,7 @@ bool Point::operator==(const Point & rhs)
     return x == rhs.x && y == rhs.y;
 }
 
-const Point prograss(const Point& from,const Point& to , float speed){
+const Point prograssByDestination(const Point& from,const Point& to , float speed){
     Point ans(0,0);
     Cartesian_vector cv;
     cv.delta_x = to.x - from.x;
@@ -78,6 +78,26 @@ const Point prograss(const Point& from,const Point& to , float speed){
     double direction = to_degrees(pv.theta);
     ans.x = from.x + sin(direction*pi/180)*speed;
     ans.y = from.y + cos(direction*pi/180)*speed;
-    cout << ans.x << " " << ans.y << endl;
+    Cartesian_vector check;
+    check.delta_x = to.x - ans.x;
+    check.delta_y = to.y - ans.y;
+    Polar_vector pcheck(check);
+    if(to_degrees(pv.theta) != to_degrees(pcheck.theta))
+        return to;
     return Point(ans.x,ans.y);
+}
+
+const Point prograssByCourse(const Point& from,double direction , float speed){
+    Point ans(0,0);
+    ans.x = from.x + sin(direction*pi/180)*speed;
+    ans.y = from.y + cos(direction*pi/180)*speed;
+    return Point(ans.x,ans.y);
+}
+
+bool PossibleToAttacck(const Point& attacker,const Point& defender , float area){
+    Cartesian_vector cv;
+    cv.delta_x = attacker.x - defender.x;
+    cv.delta_y = attacker.y - defender.y;
+    Polar_vector pv(cv);
+    return pv.r <= area;
 }

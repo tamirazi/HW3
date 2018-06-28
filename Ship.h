@@ -26,12 +26,13 @@ public:
     const Point &getDestination() const;
     void setDestination(const Point &destination);
     const string &getDestinationName() const;
-    virtual const string& getCommandByPriorety() = 0;
+    virtual const string getCommandByPriority() = 0;
     void setDestinationName(const string &destination);
     Ship(const string& name ,const string& type,const Point& p);
     void stop();
     virtual void show_Status();
     void goToDestination(const string& command);
+    void goOnCourse(const string& line);
     void movingToDestintion(const Point &destination , float speed);
     //void movingOnCourse(const Cartesian_vector &angle, float speed);
     float getFuel() const;

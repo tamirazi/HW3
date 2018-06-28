@@ -38,6 +38,8 @@ public:
     bool thereIsSuchShip(const string& ship);
     shared_ptr<SimObject> getObjectByName(const string& name);
     Ship * getShipByName(const string &name);
+    Patrol * getPatrolShipByName(const string &name);
+    Freighter * getFreighterShipByName(const string &name);
     Port * getPortByName(const string &name);
 };
 

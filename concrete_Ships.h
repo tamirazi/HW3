@@ -22,7 +22,7 @@ public:
     Freighter(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
         Ship::setFuel(FREIGHTER_FUEL_CAPACITY);
         setSpeed(0);
-        consumption = 0.1;
+        consumption = 1;
     };
 
     void update(){
@@ -35,7 +35,7 @@ public:
         Ship::show_Status();
         cout << endl;
     }
-    const string& getCommandByPriorety();
+    const string getCommandByPriority();
     int getResistance() const {
         return resistance;
     }
@@ -74,14 +74,14 @@ public:
     Patrol(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
         setFuel(PATROL_FUEL_CAPACITY);
         setSpeed(0);
-        consumption = 0.2;
+        consumption = 2;
     };
     void update(){
         cout << "Patrol update"<<endl;
         playCommand();
     }//update the ship missions
     void playCommand();
-    const string& getCommandByPriorety();
+    const string getCommandByPriority();
     void show_Status() {//show patrol status
         cout <<getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
@@ -99,13 +99,17 @@ public:
 class Cruiser :public Ship{
 private:
     int attacking_force;//local variables
+    int attacking_range;
 public:
-    Cruiser(const string& name ,const string& type, const Point& p , int force  ):Ship(name ,type, p) , attacking_force(force) {};
+    Cruiser(const string& name ,const string& type, const Point& p , int force ,int range ):Ship(name ,type, p) , attacking_force(force),attacking_range(range) {};
     void update(){
-        cout << "Cruiser update"<<endl;
+        cout << getName() << " Cruiser update"<<endl;
+        attackShips();
+        playCommand();
     }//update the ship missions
     void playCommand();
-    const string& getCommandByPriorety();
+    void attackShips();
+    const string getCommandByPriority();
     void show_Status() {//show cruiser status
         cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), force: " << attacking_force;
         Ship::show_Status();

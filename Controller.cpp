@@ -73,7 +73,7 @@ void Controller::run() {
             location2 >> y;
             ss >> resistance;
             ss >> secondArg;
-            Model::getInstance().addShip(shipFactory::getInstance().createNewShip(name,type,Point(x,y),resistance));//creating the ship with ship factory and adding it into the model
+            Model::getInstance().addShip(shipFactory::getInstance().createNewShip(name,type,Point(x,y),resistance,secondArg));//creating the ship with ship factory and adding it into the model
         }else if(user_command == "go"){
             // up timer + 1
 
@@ -140,7 +140,6 @@ bool Controller::parseLineForErrors(const string &usrLine) {
     //this function pharsing the line from the user for checking errors
     //if the command are good
     //add the command to specific ship queue
-
     string command , name;
     stringstream ss(usrLine);
     getline(ss , name , ' ');
@@ -255,6 +254,32 @@ bool Controller::parseLineForErrors(const string &usrLine) {
         }else{
             //todo exception
             cerr << "'unload_at' command is only for Freighter ship" << endl;
+            return false;
+        }
+    }else if( command == "attack"){
+        string shipToAttack;
+        if(s->getType() == "Cruiser"){
+            if(wordsCounter(args) == 1){
+                ssargs >> shipToAttack;
+                Ship* toAttack = Model::getInstance().getShipByName(shipToAttack);
+                if(toAttack){
+                    if(toAttack->getType() == "Freighter" || toAttack->getType() == "Patrol" ){
+                        return  true;
+                    }else{
+                        cerr << "you cant attack a Cruiser"<< endl;
+                        //todo exception
+                        return false;
+                    }
+
+                }else{
+                    cerr << "ship name ERROR"<< endl;
+                    //todo exception
+                    return false;
+                }
+            }
+        }else{
+            //todo exception
+            cerr << "'attack' command is only for Cruiser ship" << endl;
             return false;
         }
     }

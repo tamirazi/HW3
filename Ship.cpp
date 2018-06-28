@@ -105,7 +105,7 @@ void Ship::goToDestination(const string& line) {
     stringstream ss(line);
     string command;
     string portName;
-    int speed;
+    float speed;
     ss  >> command;
     if(command == "destination") {
         ss >> portName;
@@ -113,11 +113,25 @@ void Ship::goToDestination(const string& line) {
         Port *p = Model::getInstance().getPortByName(portName);
         if (p) {
             this->setDestination(p->getLocation());
-            setLocation(prograss(getLocation(), p->getLocation(), speed));
+            setLocation(prograssByDestination(getLocation(), p->getLocation(), speed));
             setDestinationName(p->getName());
             setFuel(getFuel() - getConsumption());
             movingToDestintion(p->getLocation(), speed);
         } else { cerr << "port null" << endl; }
+    }
+}
+
+void Ship::goOnCourse(const string &line) {
+    cout << line << endl;
+    stringstream ss(line);
+    string command;
+    double degree;
+    float speed;
+    ss  >> command;
+    if(command == "course") {
+        ss >> degree;
+        ss >> speed;
+        setLocation(prograssByCourse(getLocation(),degree,speed));
     }
 }
 

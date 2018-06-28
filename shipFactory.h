@@ -24,7 +24,7 @@ public:
         }else if(type.compare("Patrol") == 0){
             return new Patrol(name,type,loctaion,resistance,capacity_range);
         }else if(type.compare("Cruiser") == 0){
-            return new Cruiser(name,type,loctaion,resistance);
+            return new Cruiser(name,type,loctaion,resistance,capacity_range);
         }else{ cout << "Do NOT know this kind of ship."<< endl ; exit(1);}
     }
 };

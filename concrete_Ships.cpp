@@ -27,7 +27,7 @@ void Patrol::playCommand() {
             missions.pop_back();
         }
     }else if(!tasks.empty() && ship_status == Docked){
-        string command = tasks.back();
+        string command = tasks.back().c_str();
         tasks.pop_back();
         if(command == "refuel"){
             Port *p = dynamic_cast<Port*>(Model::getInstance().getPortByName(destinationName));
@@ -72,7 +72,7 @@ void Patrol::calculateTasks() {
     }
 
     //now allPorts vector left with the starting port only
-    string lastPort = allPorts.front();
+    string lastPort = allPorts.front().c_str();
     allPorts.clear();
     stringstream ss;
     ss << "destination " << lastPort << " " << getSpeed();
@@ -89,7 +89,7 @@ string Patrol::findNextPort(vector<string>& portsLeft) {
 
     for (unsigned int i = 0; i <portsLeft.size() ; ++i) {
         if(portsLeft[i] != destinationName){
-            Port *p = dynamic_cast<Port*>(Model::getInstance().getPortByName(portsLeft[i]));
+            Port *p = Model::getInstance().getPortByName(portsLeft[i]);
             double  dis = distance(getLocation() , p->getLocation());
             distances.insert(make_pair(dis , p->getName()));
         }

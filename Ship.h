@@ -25,7 +25,6 @@ public:
     float getConsumption() const;
     const Point &getDestination() const;
     void setDestination(const Point &destination);
-    const string &getDestinationName() const;
     virtual const string getCommandByPriority() = 0;
     void setDestinationName(const string &destination);
     Ship(const string& name ,const string& type,const Point& p);
@@ -36,15 +35,12 @@ public:
     void movingToDestintion(const Point &destination , float speed);
     void movingOnCourse(float angle, float speed);
     float getFuel() const;
-    void setSim_obj_dest(SimObject *sim_obj_dest);
     void setFuel(float fuel);
     double getSpeed() const;
     void setSpeed(float speed);
     void setLocation(const Point& newLoc);
-    status getShip_status() const;
     void setShip_status(status ship_status);
     virtual void playCommand()= 0;
-    void printMissions();
     void insertMissionToVector(const string& command);
     bool isArrived();
     void dockAtPort();

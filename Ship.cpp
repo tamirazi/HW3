@@ -36,9 +36,6 @@ double Ship::getSpeed() const {
 void Ship::setSpeed(float speed) {
     Ship::speed = speed;
 }
-status Ship::getShip_status() const {
-    return ship_status;
-}
 void Ship::setShip_status(status ship_status) {
     Ship::ship_status = ship_status;
 }
@@ -60,18 +57,6 @@ void Ship::show_Status() {
             cout << " Docked at " << destinationName << endl;
     }
 }
-
-void Ship::setSim_obj_dest(SimObject *sim_obj_dest) {
-    Ship::sim_obj_dest = sim_obj_dest;
-}
-
-void Ship::printMissions(){
-    vector<string>::iterator iter = missions.begin();
-    for(;iter!= missions.end();++iter){
-        cout << iter.operator*() << endl;
-    }
-}
-
 void Ship::insertMissionToVector(const string &command) {//insert a string that represent a command into a specific ship queue
     missions.push_back(command);
 }
@@ -91,11 +76,6 @@ void Ship::setDestination(const Point &destination) {
 float Ship::getConsumption() const {
     return consumption;
 }
-
-const string &Ship::getDestinationName() const {
-    return destinationName;
-}
-
 void Ship::setDestinationName(const string &destination) {
     destinationName = destination;
 }

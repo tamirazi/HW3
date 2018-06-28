@@ -82,7 +82,7 @@ const Point prograssByDestination(const Point& from,const Point& to , float spee
     check.delta_x = to.x - ans.x;
     check.delta_y = to.y - ans.y;
     Polar_vector pcheck(check);
-    if(to_degrees(pv.theta) != to_degrees(pcheck.theta))
+    if((float)to_degrees(pv.theta) != (float )to_degrees(pcheck.theta))
         return to;
     return Point(ans.x,ans.y);
 }

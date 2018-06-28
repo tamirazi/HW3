@@ -117,9 +117,7 @@ void Ship::goToDestination(const string& line) {
             setDestinationName(p->getName());
             setFuel(getFuel() - getConsumption());
             movingToDestintion(p->getLocation(), speed);
-            if(getLocation().x == getDestination().x && getLocation().y == getDestination().y){
-                dockAtPort();
-            }
+
         } else { cerr << "port null" << endl; }
     }
 }
@@ -141,6 +139,15 @@ void Ship::goOnCourse(const string &line) {
 void Ship::dockAtPort() {
     setShip_status(Docked);
     setSpeed(0);
+}
+
+bool Ship::isArrived() {
+
+    if(getLocation().x == getDestination().x && getLocation().y == getDestination().y){
+        return true;
+    }
+    return false;
+
 }
 
 /*void Ship::pharseLineFromVec() {

@@ -47,6 +47,7 @@ public:
     void printMissions();
     void insertMissionToVector(const string& command);
     void dockAtPort();
+    bool isArrived();
 
 };
 

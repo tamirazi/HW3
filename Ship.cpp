@@ -54,10 +54,10 @@ void Ship::show_Status() {
             cout << ", Moving to " <<getDestinationName() << " on course " << to_degrees(deg.theta) << " deg," << getSpeed() <<  " nm/hr" ;
             break;
         case Moving_on_course:
-            cout << " Moving to " << sim_obj_dest->getName() << " on course " << endl;
+            cout << " Moving to " << destinationName << " on course " << endl;
             break;
         case Docked:
-            cout << " Docked at " << sim_obj_dest->getName() << endl;
+            cout << " Docked at " << destinationName << endl;
     }
 }
 
@@ -117,6 +117,9 @@ void Ship::goToDestination(const string& line) {
             setDestinationName(p->getName());
             setFuel(getFuel() - getConsumption());
             movingToDestintion(p->getLocation(), speed);
+            if(getLocation().x == getDestination().x && getLocation().y == getDestination().y){
+                dockAtPort();
+            }
         } else { cerr << "port null" << endl; }
     }
 }
@@ -133,6 +136,11 @@ void Ship::goOnCourse(const string &line) {
         ss >> speed;
         setLocation(prograssByCourse(getLocation(),degree,speed));
     }
+}
+
+void Ship::dockAtPort() {
+    setShip_status(Docked);
+    setSpeed(0);
 }
 
 /*void Ship::pharseLineFromVec() {

@@ -46,6 +46,7 @@ public:
     virtual void playCommand()= 0;
     void printMissions();
     void insertMissionToVector(const string& command);
+    void dockAtPort();
 
 };
 

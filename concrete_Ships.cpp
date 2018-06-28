@@ -17,33 +17,61 @@ void Freighter::playCommand() {
 
 void Patrol::playCommand() {
     if(!tasks.empty()){
-        //do the task
+        string command = tasks.front();
+        tasks.pop();
+        if(command == "refuel"){
+            Port *p = dynamic_cast<Port*>(Model::getInstance().getPortByName(destinationName));
+            if(p){
+                setFuel(getFuel() + p->getMake_per_hours());
+            } else
+                cerr << "Patrol playCommand Error to get port pointer" << endl;
+
+        }
+
     }else{
         if(!missions.empty()){//there is another mission
             //get the highest priority from vector
-            string line = missions.begin().operator*().c_str();
-            cout << line << endl;
-            stringstream ss(line);
-            string command;
-            string portName;
-            float speed;
-            ss  >> command;
-            if(command == "destination"){
-                ss >> portName;
-                ss >> speed;
-                Port* p = Model::getInstance().getPortByName(portName);
-                if(p) {
-                    this->setDestination(p->getLocation());
-                    setLocation(prograssByDestination(getLocation(),p->getLocation(),speed));
-                    setFuel(getFuel()-getConsumption());
-                    movingToDestintion(p->getLocation(),speed);
-                }else { cerr << "port null" << endl;}
-
-            }
-
+            string command = getCommandByPriority();
+            goToDestination(command);
         } else return;
     }
 }
+
+void Patrol::update() {
+    cout << "Patrol update"<<endl;
+    playCommand();
+    if(ship_status == Docked) {//arrive in Port
+        //if the ship visited all the ports
+
+        int t = timer % 3;
+        switch (t) {
+            //1st step the ship gas in port--------------------------------------------------------------------
+            case 0: {
+                Port *p = Model::getInstance().getPortByName(destinationName);
+                if (p) {
+                    tasks.push("refuel");
+                } else
+                    cout << "Patrol update : Port dynamic cast failed" << endl;
+                timer++;
+                break;
+            }
+
+                //2nd step no activity-----------------------------------------------------------------------------
+            case 1:
+                timer++;
+                break;
+                //3rd step calculate the nearst port from this location (check if the ship visited that port before)
+            case 2:
+                //building command for mission vector
+                stringstream ss;
+                //string portName = find_the_nearst_port(location , ports);
+                ss << "destination " << "portName" << " " << getSpeed();
+                missions.push_back(ss.str());
+                timer++;
+                break;
+        }
+    }
+}//update the ship missions
 
 const string Patrol::getCommandByPriority() {
     return missions.begin().operator*();
@@ -93,7 +121,6 @@ void Cruiser::attackShips() {
                     freig->getResistance();
                 }
             }
-
         }
     }
 }

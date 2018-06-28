@@ -10,7 +10,7 @@
 
 
 enum { FREIGHTER_FUEL_CAPACITY = 500, FRIEGHTER_MAXSPEED = 40,PATROL_FUEL_CAPACITY = 900, PATROL_MAXSPEED = 15, CRUSIER_MAXSPEED = 75};//fuel and speed limits
-
+//---------------------------------------------------------------------------------------Freighter
 class Freighter :public Ship{//types of ships
 private:
     int resistance;//local variables
@@ -64,11 +64,12 @@ public:
         return containers_capacity;
     }
 };
-
+//---------------------------------------------------------------------------------------Patrol
 class Patrol :public Ship{
 private:
     int resistance;//local variables
     int containers_capacity;
+    int timer = 0;
     queue<string> tasks;
 public:
     Patrol(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
@@ -76,10 +77,7 @@ public:
         setSpeed(0);
         consumption = 2;
     };
-    void update(){
-        cout << "Patrol update"<<endl;
-        playCommand();
-    }//update the ship missions
+    void update();
     void playCommand();
     const string getCommandByPriority();
     void show_Status() {//show patrol status
@@ -95,7 +93,7 @@ public:
         return containers_capacity;
     }
 };
-
+//---------------------------------------------------------------------------------------Cruiser
 class Cruiser :public Ship{
 private:
     int attacking_force;//local variables

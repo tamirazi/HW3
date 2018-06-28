@@ -33,7 +33,7 @@ int main(int argc,char* argv[]) {
         Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Emma","Freighter",Point(30.00, 30.00),8,1000));
         Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Xerxes","Cruiser",Point(25.00, 25.00) ,6,2));
         Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Shikishima","Patrol",Point(0.0,0.0),10));
-        Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Azizovitch","Patrol",Point(1,1),10));
+       // Model::getInstance().addShip(shipFactory::getInstance().createNewShip("Azizovitch","Patrol",Point(1,1),10));
         c.run();
 
     }

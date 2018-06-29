@@ -32,25 +32,30 @@ void Patrol::playCommand() {
             calculateTasks();
             missions.pop_back();
         }
-    }else if(!tasks.empty() && ship_status == Docked){
+    }else if(!tasks.empty()){
         string command = tasks.back().c_str();
-        tasks.pop_back();
         if(command == "refuel"){
             Port *p = (Model::getInstance().getPortByName(destinationName));
             if(p){
                 setFuel(getFuel() + p->getMake_per_hours());
+                tasks.pop_back();
             } else
                 cerr << "Patrol playCommand Error to get port pointer" << endl;
 
         }else if(command != "nothing"){
             goToDestination(command);
-        }
+            if(isArrived()){
+                tasks.pop_back();
+            }
+        }else if(command == "nothing")
+            tasks.pop_back();
 
+    }else if(tasks.empty()){
+        cout << getName() << " " << "just finish full circle patrol in all ports" << endl;
     }
 
 }
 void Patrol::update() {
-    cout << "Patrol update"<<endl;
     playCommand();
     if(isArrived()){
         dockAtPort();

@@ -28,7 +28,6 @@ public:
         consumption = 10;
     };
     void update(){
-        cout << "Freighter update"<<endl;
         playCommand();
     }//update the ship missions
     void playCommand(); // plays another command from vector
@@ -104,7 +103,6 @@ private:
 public:
     Cruiser(const string& name ,const string& type, const Point& p , int force ,int range ):Ship(name ,type, p) , attacking_force(force),attacking_range(range) {};
     void update(){
-        cout << getName() << " Cruiser update"<<endl;
         attackShips();
         playCommand();
     }//update the ship missions

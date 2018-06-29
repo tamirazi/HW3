@@ -122,6 +122,6 @@ void Ship::dockAtPort() {
 }
 
 bool Ship::isArrived() {
-    return getLocation().x == getDestination().x && getLocation().y == getDestination().y && destinationName != "";
+    return getLocation().x == getDestination().x && getLocation().y == getDestination().y && !destinationName.empty();
 }
 

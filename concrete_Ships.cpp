@@ -30,7 +30,7 @@ void Patrol::playCommand() {
         string command = tasks.back().c_str();
         tasks.pop_back();
         if(command == "refuel"){
-            Port *p = dynamic_cast<Port*>(Model::getInstance().getPortByName(destinationName));
+            Port *p = (Model::getInstance().getPortByName(destinationName));
             if(p){
                 setFuel(getFuel() + p->getMake_per_hours());
             } else

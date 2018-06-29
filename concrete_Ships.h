@@ -8,6 +8,7 @@
 #include <deque>
 #include <map>
 #include <algorithm>
+#include <iomanip>
 #include "Ship.h"
 
 
@@ -17,51 +18,48 @@ class Freighter :public Ship{//types of ships
 private:
     int resistance;//local variables
     int containers_capacity;
-    int containers_to_load = 0;
-    int containers_to_unload = 0;
+    int containers_to_load ;
+    int containers_to_unload ;
     queue<string> tasks;
 public:
-    Freighter(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity) {
+    Freighter(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity),containers_to_load(0) ,containers_to_unload(0) {
         Ship::setFuel(FREIGHTER_FUEL_CAPACITY);
         setSpeed(0);
         consumption = 10;
     };
-
     void update(){
         cout << "Freighter update"<<endl;
         playCommand();
     }//update the ship missions
     void playCommand(); // plays another command from vector
     void show_Status() {//show freighter status
-        cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance;
+        std::cout << std::fixed;
+        std::cout << std::setprecision(2);
+        cout << getType() << " "<< getName() <<   " at ";
+        getLocation().print();
+        cout <<", fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
-        cout << "containers:  " << containers_capacity << endl;
+        cout << ", containers: " << containers_capacity <<  endl;
     }
     const string getCommandByPriority();
     int getResistance() const {
         return resistance;
     }
-
     int getContainers_to_load() const {
         return containers_to_load;
     }
-
     int getContainers_to_unload() const {
         return containers_to_unload;
     }
-
     void setContainers_capacity(int containers_capacity) {
         Freighter::containers_capacity = containers_capacity;
     }
-
     void setContainers_to_load(int containers_to_load) {
         Freighter::containers_to_load = containers_to_load;
     }
-
     void setContainers_to_unload(int containers_to_unload) {
         Freighter::containers_to_unload = containers_to_unload;
     }
-
     int getContainers_capacity() const {
         return containers_capacity;
     }
@@ -81,8 +79,13 @@ public:
     void playCommand();
     const string getCommandByPriority();
     void show_Status() {//show patrol status
-        cout <<getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), fuel: " << getFuel() << " kl, resistance: " << resistance <<  " ";
+        cout << fixed;
+        cout << setprecision(2);
+        cout <<getType() << " "<< getName() <<   " at " ;
+        getLocation().print();
+        cout << ", fuel: " << getFuel() << " kl, resistance: " << resistance <<  " ";
         Ship::show_Status();
+        cout <<  endl;
     }
     int getResistance() const {
         return resistance;
@@ -109,8 +112,13 @@ public:
     void attackShips();
     const string getCommandByPriority();
     void show_Status() {//show cruiser status
-        cout << getType() << " "<< getName() <<   " at (" << getLocation().x << ", " << getLocation().y << "), force: " << attacking_force;
+        cout << fixed;
+        cout << setprecision(2);
+        cout << getType() << " "<< getName() <<   " at ";
+        getLocation().print();
+        cout << ", force: " << attacking_force;
         Ship::show_Status();
+        cout << endl;
     }
 };
 

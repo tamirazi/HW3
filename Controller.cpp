@@ -51,10 +51,9 @@ void Controller::run() {
             double arg1 , arg2;
             ss >> arg1 >> arg2;
             view_ptr->setOrigins(arg1 , arg2);
-        }
         //---------------------------------------
         //Model Commands
-        if(user_command == "status"){//print status for all simulator objects existing in board
+        }else if(user_command == "status"){//print status for all simulator objects existing in board
             Model::getInstance().showSimObjectStatus();
         }else if(user_command == "create"){//create new ship by command
             double x=0,y=0;//for parsing the command
@@ -79,10 +78,9 @@ void Controller::run() {
 
             //call update for every SimObj
             Model::getInstance().go();
-        }
         //---------------------------------------
         //Ships Command
-        if(Model::getInstance().thereIsSuchShip(user_command)){//if there is such ship
+        }else if(Model::getInstance().thereIsSuchShip(user_command)){//if there is such ship
             //if user command = ship name;
             string command;
             ss >> command;
@@ -97,13 +95,12 @@ void Controller::run() {
                 string mission  = line.erase(0,user_command.size()+1).c_str();
                 s->insertMissionToVector(mission);//insert the command into ship queue
             }else{cerr << "There has been some problem the command didn't insert into queue" << endl;}
-        }
         //---------------------------------------
-        if(user_command == "exit"){
+        }else if(user_command == "exit"){
             cout << "Exit..."<< endl;
             return;
             //check for memory leak
-        }
+        }else { cout << "There is no such command, Try again and this time do it good" << endl;}
     }
 }
 

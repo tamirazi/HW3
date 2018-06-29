@@ -20,5 +20,8 @@ int Port::getMake_per_hours() const {
 void Port::update() {}
 
 void Port::show_Status() {
-    cout << getType() << " " << getName() << " at position ("<< getLocation().x << ", " << getLocation().y << "), Fuel available: " << getCapicity() << " kl" << endl;
+    cout << fixed <<setprecision(2);
+    cout << getType() << " " << getName() << " at position ";
+    getLocation().print();
+    cout << ", Fuel available: " << getCapicity() << " kl" << endl;
 }

@@ -42,19 +42,19 @@ void Ship::setShip_status(status ship_status) {
 void Ship::show_Status() {
     switch(ship_status){
         case Stopped:
-            cout << ", Stopped " << endl;
+            cout << ", Stopped ";
             break;
         case Dead_in_the_water:
-            cout <<" Dead in the water"<< endl;
+            cout <<", Dead in the water";
             break;
         case Moving_to:
-            cout << ", Moving to " <<destinationName<< " on course " << to_degrees(deg.theta) << " deg," << speed <<  " nm/hr" ;
+            cout << ", Moving to " <<destinationName<< " on course " << to_degrees(deg.theta) << " deg, speed " << speed <<  " nm/hr" ;
             break;
         case Moving_on_course:
-            cout << " Moving on course " << course << " speed: " << speed << " nm/hr " <<  endl;
+            cout << " Moving on course " << course << " deg, speed " << speed << " nm/hr ";
             break;
         case Docked:
-            cout << " Docked at " << destinationName << endl;
+            cout << " Docked at " << destinationName ;
     }
 }
 void Ship::insertMissionToVector(const string &command) {//insert a string that represent a command into a specific ship queue

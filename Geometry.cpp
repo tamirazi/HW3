@@ -1,7 +1,6 @@
 #include "Geometry.h"
 #include <cmath>
 #include <ctgmath>
-#define PI 3.14159265
 const double pi = 2. * atan2(1., 0.);
 double to_radians(double theta_d)
 {
@@ -69,7 +68,7 @@ bool Point::operator==(const Point & rhs)
     return x == rhs.x && y == rhs.y;
 }
 
-const Point prograssByDestination(const Point& from,const Point& to , float speed){
+const Point progressByDestination(const Point& from,const Point& to , float speed){//make calculation of new point to be and return it by 2 points and given speed
     Point ans(0,0);
     Cartesian_vector cv;
     cv.delta_x = to.x - from.x;
@@ -87,14 +86,15 @@ const Point prograssByDestination(const Point& from,const Point& to , float spee
     return Point(ans.x,ans.y);
 }
 
-const Point prograssByCourse(const Point& from,double direction , float speed){
+const Point progressByCourse(const Point& from,double direction , float speed){//make calculation of new point to be and return it by a point and direction and given
     Point ans(0,0);
     ans.x = from.x + sin(direction*pi/180)*speed;
     ans.y = from.y + cos(direction*pi/180)*speed;
     return Point(ans.x,ans.y);
 }
 
-bool PossibleToAttacck(const Point& attacker,const Point& defender , float area){
+bool PossibleToAttack(const Point& attacker,const Point& defender , float area){//check if the attacker and defender is in the range to start battle
+    //the function gets 2 points for the locations of both attacker and defender and the range to attack
     Cartesian_vector cv;
     cv.delta_x = attacker.x - defender.x;
     cv.delta_y = attacker.y - defender.y;

@@ -10,7 +10,7 @@ void Ship::stop() {//stop the ship and clear the missions vector
     ship_status = Stopped;
     missions.clear();
 }
-void Ship::movingToDestintion(const Point &destination , float newSpeed) {
+void Ship::movingToDestintion(const Point &destination , float newSpeed) {//change the status of a ship to movingToDestintion
     ship_status = Moving_to;
     Ship::destination = destination;
     Cartesian_vector cv;
@@ -19,7 +19,7 @@ void Ship::movingToDestintion(const Point &destination , float newSpeed) {
     deg = cv;
     speed = newSpeed;
 }
-void Ship::movingOnCourse(float angle , float newSpeed) {
+void Ship::movingOnCourse(float angle , float newSpeed) {//change the status of a ship to movingOnCourse
     course = angle;
     speed = newSpeed;
     ship_status = Moving_on_course;
@@ -80,7 +80,7 @@ void Ship::setDestinationName(const string &destination) {
     destinationName = destination;
 }
 
-void Ship::goToDestination(const string& line) {
+void Ship::goToDestination(const string& line) {//the the specific ship to sail by the destination port given in line
     cout << line << endl;
     stringstream ss(line);
     string command;
@@ -93,7 +93,7 @@ void Ship::goToDestination(const string& line) {
         Port *p = Model::getInstance().getPortByName(portName);
         if (p) {
             this->setDestination(p->getLocation());
-            setLocation(prograssByDestination(getLocation(), p->getLocation(), speed));
+            setLocation(progressByDestination(getLocation(), p->getLocation(), speed));
             setDestinationName(p->getName());
             setFuel(getFuel() - getConsumption());
             movingToDestintion(p->getLocation(), speed);
@@ -101,7 +101,7 @@ void Ship::goToDestination(const string& line) {
     }
 }
 
-void Ship::goOnCourse(const string &line) {
+void Ship::goOnCourse(const string &line) {//the the specific ship to sail by the course given in line
     cout << line << endl;
     stringstream ss(line);
     string command;
@@ -111,7 +111,7 @@ void Ship::goOnCourse(const string &line) {
     if(command == "course") {
         ss >> degree;
         ss >> speed;
-        setLocation(prograssByCourse(getLocation(),degree,speed));
+        setLocation(progressByCourse(getLocation(),degree,speed));
         movingOnCourse(degree,speed);
     }
 }

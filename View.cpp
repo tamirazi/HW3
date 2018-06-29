@@ -70,13 +70,7 @@ void View::setOrigins(double newXOrigin, double newYOrigin) {
 }
 
 void View::setSize(int newSize) {
-    if(newSize > 6 && newSize <= 30){
-        size = newSize;
-    }
-    else
-        cerr << "setSize function: " << "illegal argument" << endl;
-
-    //the controller need to handle error this is extra test
+    size = newSize;
 }
 
 void View::zoom(int num) {

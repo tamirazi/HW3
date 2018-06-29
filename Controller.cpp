@@ -5,17 +5,15 @@
 #include <fstream>
 #include "Controller.h"
 
+enum { MIN_SCALE = 3  ,MAX_SCALE = 60};
 
 Controller::Controller() {
     view_ptr.reset(new View());
     //set this view_ptr to the model
-
 }
 
 Controller::~Controller() {
 }
-
-
 
 void Controller::run() {
 
@@ -36,7 +34,7 @@ void Controller::run() {
         }else if(user_command == "size"){
             int num;
             ss >> num;
-            if(num > 6 && num <= 30){
+            if(num > MIN_SCALE && num <= MAX_SCALE){
                 view_ptr->setSize(num);
             }else{
                 //todo exception

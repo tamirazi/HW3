@@ -2,7 +2,7 @@
 // Created by bar on 6/26/2018.
 //
 #include "Model.h"
-
+//---------------------------------------------------------------------------------------Freighter
 void Freighter::playCommand() {
     if(!tasks.empty()){
         //do the task
@@ -14,7 +14,13 @@ void Freighter::playCommand() {
         } else return;
     }
 }
-
+const string Freighter::getCommandByPriority() {
+    vector<string>::iterator iter = missions.begin();
+    for(;iter != missions.end() ; ++iter){
+    }
+    return missions.begin().operator*();
+}
+//---------------------------------------------------------------------------------------Patrol
 void Patrol::playCommand() {
 
     if(!missions.empty()){//
@@ -43,7 +49,6 @@ void Patrol::playCommand() {
     }
 
 }
-
 void Patrol::update() {
     cout << "Patrol update"<<endl;
     playCommand();
@@ -51,7 +56,6 @@ void Patrol::update() {
         dockAtPort();
     }
 }//update the ship missions
-
 void Patrol::calculateTasks() {
     //get the first port here we calculate all the task to do next
     vector<string> allPorts = Model::getInstance().getAllPorts();
@@ -82,7 +86,6 @@ void Patrol::calculateTasks() {
 
 
 }
-
 string Patrol::findNextPort(vector<string>& portsLeft) {
 
     map<double , string , greater<double> > distances;
@@ -101,11 +104,10 @@ string Patrol::findNextPort(vector<string>& portsLeft) {
 
 
 }
-
 const string Patrol::getCommandByPriority() {
     return missions.begin().operator*();
 }
-
+//---------------------------------------------------------------------------------------Cruiser
 void Cruiser::playCommand() {
     if(!missions.empty()){
         string line = getCommandByPriority();
@@ -115,7 +117,6 @@ void Cruiser::playCommand() {
 
     }else { return;}
 }
-
 const string Cruiser::getCommandByPriority() {
     vector<string>::iterator iter = missions.end();
     bool gotACommand = false;
@@ -135,7 +136,6 @@ const string Cruiser::getCommandByPriority() {
     }
     return line.c_str();
 }
-
 void Cruiser::attackShips() {
     vector<string>::iterator iter = missions.begin();
     for(;iter != missions.end() ; ++iter){
@@ -151,7 +151,7 @@ void Cruiser::attackShips() {
                 cout << "the Ship was not allocated" << endl;
                 exit(1);
             }
-            if(PossibleToAttacck(getLocation(),ship->getLocation(),attacking_range)){
+            if(PossibleToAttack(getLocation(),ship->getLocation(),attacking_range)){
                 if(ship->getType() == "Freighter"){
                     Freighter* freig = Model::getInstance().getFreighterShipByName(shipName);
                     if(!freig){
@@ -195,9 +195,3 @@ void Cruiser::attackShips() {
 }
 
 
-const string Freighter::getCommandByPriority() {
-    vector<string>::iterator iter = missions.begin();
-    for(;iter != missions.end() ; ++iter){
-    }
-    return missions.begin().operator*();
-}

@@ -27,11 +27,12 @@ public:
         setSpeed(0);
         consumption = 10;
     };
-    void update(){
+    void update() override{
+        cout << "Freighter update"<<endl;
         playCommand();
     }//update the ship missions
-    void playCommand(); // plays another command from vector
-    void show_Status() {//show freighter status
+    void playCommand() override; // plays another command from vector
+    void show_Status() override {//show freighter status
         std::cout << std::fixed;
         std::cout << std::setprecision(2);
         cout << getType() << " "<< getName() <<   " at ";
@@ -40,7 +41,7 @@ public:
         Ship::show_Status();
         cout << ", containers: " << containers_capacity <<  endl;
     }
-    const string getCommandByPriority();
+    const string getCommandByPriority() override;
     int getResistance() const {
         return resistance;
     }
@@ -74,15 +75,15 @@ public:
         setSpeed(0);
         consumption = 20;
     };
-    void update();
-    void playCommand();
-    const string getCommandByPriority();
-    void show_Status() {//show patrol status
+    void update() override;
+    void playCommand() override;
+    const string getCommandByPriority() override;
+    void show_Status() override{//show patrol status
         cout << fixed;
         cout << setprecision(2);
         cout <<getType() << " "<< getName() <<   " at " ;
         getLocation().print();
-        cout << ", fuel: " << getFuel() << " kl, resistance: " << resistance <<  " ";
+        cout << ", fuel: " << getFuel() << " kl, resistance: " << resistance <<  ", ";
         Ship::show_Status();
         cout <<  endl;
     }
@@ -102,14 +103,15 @@ private:
     int attacking_range;
 public:
     Cruiser(const string& name ,const string& type, const Point& p , int force ,int range ):Ship(name ,type, p) , attacking_force(force),attacking_range(range) {};
-    void update(){
+    void update() override{
+        cout << getName() << " Cruiser update"<<endl;
         attackShips();
         playCommand();
     }//update the ship missions
-    void playCommand();
+    void playCommand() override;
     void attackShips();
-    const string getCommandByPriority();
-    void show_Status() {//show cruiser status
+    const string getCommandByPriority() override;
+    void show_Status() override{//show cruiser status
         cout << fixed;
         cout << setprecision(2);
         cout << getType() << " "<< getName() <<   " at ";

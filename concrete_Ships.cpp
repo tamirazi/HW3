@@ -2,7 +2,7 @@
 // Created by bar on 6/26/2018.
 //
 #include "Model.h"
-//---------------------------------------------------------------------------------------Freighter
+
 void Freighter::playCommand() {
     if(!tasks.empty()){
         //do the task
@@ -14,13 +14,7 @@ void Freighter::playCommand() {
         } else return;
     }
 }
-const string Freighter::getCommandByPriority() {
-    vector<string>::iterator iter = missions.begin();
-    for(;iter != missions.end() ; ++iter){
-    }
-    return missions.begin().operator*();
-}
-//---------------------------------------------------------------------------------------Patrol
+
 void Patrol::playCommand() {
 
     if(!missions.empty()){//
@@ -32,35 +26,32 @@ void Patrol::playCommand() {
             calculateTasks();
             missions.pop_back();
         }
-    }else if(!tasks.empty()){
+    }else if(!tasks.empty() && ship_status == Docked){
         string command = tasks.back().c_str();
+        tasks.pop_back();
         if(command == "refuel"){
             Port *p = (Model::getInstance().getPortByName(destinationName));
             if(p){
                 setFuel(getFuel() + p->getMake_per_hours());
-                tasks.pop_back();
             } else
                 cerr << "Patrol playCommand Error to get port pointer" << endl;
 
         }else if(command != "nothing"){
             goToDestination(command);
-            if(isArrived()){
-                tasks.pop_back();
-            }
-        }else if(command == "nothing")
-            tasks.pop_back();
+        }
 
-    }else if(tasks.empty()){
-        cout << getName() << " " << "just finish full circle patrol in all ports" << endl;
     }
 
 }
+
 void Patrol::update() {
+    cout << "Patrol update"<<endl;
     playCommand();
     if(isArrived()){
         dockAtPort();
     }
 }//update the ship missions
+
 void Patrol::calculateTasks() {
     //get the first port here we calculate all the task to do next
     vector<string> allPorts = Model::getInstance().getAllPorts();
@@ -91,13 +82,14 @@ void Patrol::calculateTasks() {
 
 
 }
+
 string Patrol::findNextPort(vector<string>& portsLeft) {
 
     map<double , string , greater<double> > distances;
 
-    for (unsigned int i = 0; i <portsLeft.size() ; ++i) {
-        if(portsLeft[i] != destinationName){
-            Port *p = Model::getInstance().getPortByName(portsLeft[i]);
+    for (const auto &i : portsLeft) {
+        if(i != destinationName){
+            Port *p = Model::getInstance().getPortByName(i);
             double  dis = distance(getLocation() , p->getLocation());
             distances.insert(make_pair(dis , p->getName()));
         }
@@ -109,19 +101,21 @@ string Patrol::findNextPort(vector<string>& portsLeft) {
 
 
 }
+
 const string Patrol::getCommandByPriority() {
     return missions.begin().operator*();
 }
-//---------------------------------------------------------------------------------------Cruiser
+
 void Cruiser::playCommand() {
     if(!missions.empty()){
         string line = getCommandByPriority();
-        if(line != ""){
+        if(!line.empty()){
             goOnCourse(line);
         }
 
     }else { return;}
 }
+
 const string Cruiser::getCommandByPriority() {
     vector<string>::iterator iter = missions.end();
     bool gotACommand = false;
@@ -141,8 +135,9 @@ const string Cruiser::getCommandByPriority() {
     }
     return line.c_str();
 }
+
 void Cruiser::attackShips() {
-    vector<string>::iterator iter = missions.begin();
+    auto iter = missions.begin();
     for(;iter != missions.end() ; ++iter){
         stringstream ss(iter.operator*());
         string command;
@@ -200,3 +195,9 @@ void Cruiser::attackShips() {
 }
 
 
+const string Freighter::getCommandByPriority() {
+    auto iter = missions.begin();
+    for(;iter != missions.end() ; ++iter){
+    }
+    return missions.begin().operator*();
+}

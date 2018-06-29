@@ -2,7 +2,7 @@
 // Created by bar on 6/26/2018.
 //
 #include "Model.h"
-
+//---------------------------------------------------------------------------------------Freighter
 void Freighter::playCommand() {
     if(!tasks.empty()){
         //do the task
@@ -14,7 +14,13 @@ void Freighter::playCommand() {
         } else return;
     }
 }
-
+const string Freighter::getCommandByPriority() {
+    vector<string>::iterator iter = missions.begin();
+    for(;iter != missions.end() ; ++iter){
+    }
+    return missions.begin().operator*();
+}
+//---------------------------------------------------------------------------------------Patrol
 void Patrol::playCommand() {
 
     if(!missions.empty()){//
@@ -26,32 +32,35 @@ void Patrol::playCommand() {
             calculateTasks();
             missions.pop_back();
         }
-    }else if(!tasks.empty() && ship_status == Docked){
+    }else if(!tasks.empty()){
         string command = tasks.back().c_str();
-        tasks.pop_back();
         if(command == "refuel"){
             Port *p = (Model::getInstance().getPortByName(destinationName));
             if(p){
                 setFuel(getFuel() + p->getMake_per_hours());
+                tasks.pop_back();
             } else
                 cerr << "Patrol playCommand Error to get port pointer" << endl;
 
         }else if(command != "nothing"){
             goToDestination(command);
-        }
+            if(isArrived()){
+                tasks.pop_back();
+            }
+        }else if(command == "nothing")
+            tasks.pop_back();
 
+    }else if(tasks.empty()){
+        cout << getName() << " " << "just finish full circle patrol in all ports" << endl;
     }
 
 }
-
 void Patrol::update() {
-    cout << "Patrol update"<<endl;
     playCommand();
     if(isArrived()){
         dockAtPort();
     }
 }//update the ship missions
-
 void Patrol::calculateTasks() {
     //get the first port here we calculate all the task to do next
     vector<string> allPorts = Model::getInstance().getAllPorts();
@@ -82,14 +91,13 @@ void Patrol::calculateTasks() {
 
 
 }
-
 string Patrol::findNextPort(vector<string>& portsLeft) {
 
     map<double , string , greater<double> > distances;
 
-    for (const auto &i : portsLeft) {
-        if(i != destinationName){
-            Port *p = Model::getInstance().getPortByName(i);
+    for (unsigned int i = 0; i <portsLeft.size() ; ++i) {
+        if(portsLeft[i] != destinationName){
+            Port *p = Model::getInstance().getPortByName(portsLeft[i]);
             double  dis = distance(getLocation() , p->getLocation());
             distances.insert(make_pair(dis , p->getName()));
         }
@@ -101,22 +109,22 @@ string Patrol::findNextPort(vector<string>& portsLeft) {
 
 
 }
-
 const string Patrol::getCommandByPriority() {
     return missions.begin().operator*();
 }
-
-void Cruiser::playCommand() {
+//---------------------------------------------------------------------------------------Cruiser
+void Cruiser::playCommand() {//play cruiser command
     if(!missions.empty()){
         string line = getCommandByPriority();
-        if(!line.empty()){
+        if(line != ""){
             goOnCourse(line);
         }
 
     }else { return;}
 }
-
-const string Cruiser::getCommandByPriority() {
+const string Cruiser::getCommandByPriority() {//get the most highest priority from queue
+    //the only command to do is an on course command and the last one from them
+    //if there is no such command the ship will do as before... if there is one the ship started to sail on a new course/
     vector<string>::iterator iter = missions.end();
     bool gotACommand = false;
     string line = "";
@@ -135,9 +143,10 @@ const string Cruiser::getCommandByPriority() {
     }
     return line.c_str();
 }
-
-void Cruiser::attackShips() {
-    auto iter = missions.begin();
+void Cruiser::attackShips() {//attack all ships in cruiser vector if there is any
+    //the attack succed if the attacking force is greater than the resistance of the defender
+    //otherwise the attack fails in any cae the defender will stop sailing.
+    vector<string>::iterator iter = missions.begin();
     for(;iter != missions.end() ; ++iter){
         stringstream ss(iter.operator*());
         string command;
@@ -192,12 +201,4 @@ void Cruiser::attackShips() {
             }
         }
     }
-}
-
-
-const string Freighter::getCommandByPriority() {
-    auto iter = missions.begin();
-    for(;iter != missions.end() ; ++iter){
-    }
-    return missions.begin().operator*();
 }

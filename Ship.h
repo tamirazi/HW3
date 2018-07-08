@@ -32,7 +32,7 @@ public:
     virtual void show_Status();
     void goToDestination(const string& command);
     void goOnCourse(const string& line);
-    void movingToDestintion(const Point &destination , float speed);
+    void movingToDestination(const Point &destination , float speed);
     void movingOnCourse(float angle, float speed);
     float getFuel() const;
     void setFuel(float fuel);
@@ -44,6 +44,13 @@ public:
     void insertMissionToVector(const string& command);
     bool isArrived();
     void dockAtPort();
+    void printMissions(){
+        cout << getName() << "  missions:" << endl;
+        auto iter = missions.begin();
+        for(;iter!= missions.end();iter++){
+            cout << iter.operator*() <<endl;
+        }
+    };
 
 };
 

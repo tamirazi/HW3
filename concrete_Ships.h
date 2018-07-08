@@ -42,6 +42,7 @@ public:
         cout << ", containers: " << containers_capacity <<  endl;
     }
     const string getCommandByPriority() override;
+    bool thereIsErgentRequest();
     int getResistance() const {
         return resistance;
     }

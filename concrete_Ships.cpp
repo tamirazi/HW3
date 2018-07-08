@@ -4,14 +4,11 @@
 #include "Model.h"
 //---------------------------------------------------------------------------------------Freighter
 void Freighter::playCommand() {
-    if(!tasks.empty()){
+    if(!missions.empty()){
         //do the task
-    }else{
-        if(!missions.empty()){//there is another mission
-            //get the highest priority from vector
-            string command = getCommandByPriority();
-            goToDestination(command);
-        } else return;
+        if(thereIsErgentRequest()){
+            printMissions();
+        }
     }
 }
 const string Freighter::getCommandByPriority() {
@@ -19,6 +16,25 @@ const string Freighter::getCommandByPriority() {
     for(;iter != missions.end() ; ++iter){
     }
     return missions.begin().operator*();
+}
+bool Freighter::thereIsErgentRequest() {
+    auto iter = missions.end();
+    bool gotACommand = false;
+    string line;
+
+    while(iter != missions.begin()){
+        --iter;
+        stringstream ss(iter.operator*());
+        string command;
+        ss >> command;
+        if(!gotACommand && (command == "point" ||  command == "course" ||  command == "destination")){
+            gotACommand =true;
+            line = iter.operator*().c_str();
+        }else if(command == "point" ||  command == "course" ||  command == "destination"){
+            iter = missions.erase(iter);
+        }
+    }
+    return gotACommand;
 }
 //---------------------------------------------------------------------------------------Patrol
 void Patrol::playCommand() {

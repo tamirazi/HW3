@@ -10,7 +10,7 @@ void Ship::stop() {//stop the ship and clear the missions vector
     ship_status = Stopped;
     missions.clear();
 }
-void Ship::movingToDestintion(const Point &destination , float newSpeed) {//change the status of a ship to movingToDestintion
+void Ship::movingToDestination(const Point &destination , float newSpeed) {//change the status of a ship to movingToDestination
     ship_status = Moving_to;
     Ship::destination = destination;
     Cartesian_vector cv;
@@ -96,7 +96,7 @@ void Ship::goToDestination(const string& line) {//the the specific ship to sail 
             setLocation(progressByDestination(getLocation(), p->getLocation(), speed));
             setDestinationName(p->getName());
             setFuel(getFuel() - getConsumption());
-            movingToDestintion(p->getLocation(), speed);
+            movingToDestination(p->getLocation(), speed);
         } else { cerr << "port null" << endl; }
     }
 }

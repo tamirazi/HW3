@@ -9,7 +9,7 @@
 using namespace std;
 class shipNotFoundException: public exception{//ship not found in program exception
 public:
-    const char* what()const noexcept override{ return  "such Name does not exist in the current network";}
+    const char* what()const noexcept override{ return  "such ship Name does not exist in the current network";}
 };
 class negativeSpeedException: public exception{//the speed is negative
 public:
@@ -26,6 +26,18 @@ public:
 class noSuchCommandException: public exception{//if the command is not defined throw exception
 public:
     const char* what()const noexcept override { return  "THERE is no such Command";}
+};
+class fileNotFoundException: public exception{//if file not found
+public:
+    const char* what()const noexcept override { return  "cannot open file";}
+};
+class viewException: public exception{
+public:
+    const char* what()const noexcept override{ return  "view size scale is 3 - 60";}
+};
+class zoomException: public exception{
+public:
+    const char* what()const noexcept override{ return  "zoom must be bigger than 0";}
 };
 class commandErrorException: public exception{//if runtime input occurred  missing or wrong input statement
     int whatToPrint = 0;

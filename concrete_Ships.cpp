@@ -113,7 +113,7 @@ const string Patrol::getCommandByPriority() {
     return missions.begin().operator*();
 }
 //---------------------------------------------------------------------------------------Cruiser
-void Cruiser::playCommand() {
+void Cruiser::playCommand() {//play cruiser command
     if(!missions.empty()){
         string line = getCommandByPriority();
         if(line != ""){
@@ -122,7 +122,9 @@ void Cruiser::playCommand() {
 
     }else { return;}
 }
-const string Cruiser::getCommandByPriority() {
+const string Cruiser::getCommandByPriority() {//get the most highest priority from queue
+    //the only command to do is an on course command and the last one from them
+    //if there is no such command the ship will do as before... if there is one the ship started to sail on a new course/
     vector<string>::iterator iter = missions.end();
     bool gotACommand = false;
     string line = "";
@@ -141,7 +143,9 @@ const string Cruiser::getCommandByPriority() {
     }
     return line.c_str();
 }
-void Cruiser::attackShips() {
+void Cruiser::attackShips() {//attack all ships in cruiser vector if there is any
+    //the attack succed if the attacking force is greater than the resistance of the defender
+    //otherwise the attack fails in any cae the defender will stop sailing.
     vector<string>::iterator iter = missions.begin();
     for(;iter != missions.end() ; ++iter){
         stringstream ss(iter.operator*());
@@ -198,5 +202,3 @@ void Cruiser::attackShips() {
         }
     }
 }
-
-

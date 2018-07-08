@@ -113,7 +113,7 @@ const string Patrol::getCommandByPriority() {
     return missions.begin().operator*();
 }
 //---------------------------------------------------------------------------------------Cruiser
-void Cruiser::playCommand() {//play cruiser command
+void Cruiser::playCommand() {//play cruisder command
     if(!missions.empty()){
         string line = getCommandByPriority();
         if(line != ""){

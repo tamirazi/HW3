@@ -235,10 +235,12 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                 }else{
                     throw noPortInNameException();
                 }
-            }
+            } else
+                throw commandErrorException(command , 2);
         }else{
             throw wrongCommandToShip(s->getType() , command);
         }
+//attack-----------------------------------------------------------------------
     }else if( command == "attack"){
         string shipToAttack;
         if(s->getType() == "Cruiser"){
@@ -248,19 +250,30 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                 if(toAttack){
                     if(toAttack->getType() == "Freighter" || toAttack->getType() == "Patrol" ){
                         return  true;
-                    }else{
+                    }else
                         throw cruiserException();
-                    }
-
-                }else{
+                }else
                     throw shipNotFoundException();
-                }
             } else
                 throw commandErrorException(command , 1);
         }else{
             throw wrongCommandToShip(s->getType() , command);
 
         }
+    }else if(command == "dock_at"){
+        string portName;
+                if(s->getType() == "Freighter"){
+                    if(wordsCounter(args) == 1){
+                        ssargs >> portName;
+                        Port* p = Model::getInstance().getPortByName(portName);
+                        if(p){
+                            return true;
+                        }else
+                            throw noPortInNameException();
+                    } else
+                        throw commandErrorException(command , 1);
+                }else
+                    throw wrongCommandToShip(s->getType() ,command);
     }
     return false;
 }

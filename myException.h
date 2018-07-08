@@ -45,21 +45,20 @@ public:
 };
 
 class commandErrorException: public exception{//if runtime input occurred  missing or wrong input statement
-    int whatToPrint = 0;
-    string where;
+
     string s;
 public:
-    explicit commandErrorException(const string& where,int num = 0):where(where), whatToPrint(num){
-        if(whatToPrint == 1){
+    explicit commandErrorException(const string& where,int num){
+        if(num == 1){
             s = "Error: using " + where + " the input must have one name argument. ";
         }
-        if(whatToPrint == 2){
+        if(num == 2){
              s = "Error: using " + where + " the input must have two name argument. ";
         }
-        if(whatToPrint == 3){
+        if(num == 3){
              s = "Error: using " + where + " the input must have three name argument. ";
         }
-        if(whatToPrint == 0){
+        if(num == 0){
              s = "Error: using " + where + " not enough arguments. ";
         }
     };

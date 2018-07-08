@@ -7,15 +7,13 @@ void Freighter::playCommand() {
     if(!missions.empty()){
         //do the task
         if(thereIsErgentRequest()){
-            printMissions();
+
         }
     }
 }
 const string Freighter::getCommandByPriority() {
-    vector<string>::iterator iter = missions.begin();
-    for(;iter != missions.end() ; ++iter){
-    }
-    return missions.begin().operator*();
+    string s;
+    return s;
 }
 bool Freighter::thereIsErgentRequest() {
     auto iter = missions.end();

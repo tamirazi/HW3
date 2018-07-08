@@ -10,9 +10,11 @@ with the user.
 #include "View.h"
 #include <sstream>
 #include "Model.h"
+#include "myException.h"
 #include <memory>
 class Controller {
 public:
+
     Controller();
     ~Controller();
     // creates View object, runs the program by accepting user commands, then destroys View object

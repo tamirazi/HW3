@@ -9,7 +9,6 @@ enum { MIN_SCALE = 3  ,MAX_SCALE = 60};
 
 Controller::Controller() {
     view_ptr.reset(new View());
-    //set this view_ptr to the model
 }
 
 Controller::~Controller() {
@@ -18,87 +17,92 @@ Controller::~Controller() {
 void Controller::run() {
 
     while(true){
-        cout << "Time " << Model::getInstance().getTimer() << ": ";
-        cout << "Enter command: ";
-        getline(cin , line);
-        stringstream ss(line);
-        getline(ss , user_command , ' ');
-        transform(user_command.begin(),user_command.end(),user_command.begin(),::tolower);
-        //---------------------------------------
-        //View Commands
-        if(user_command == "show"){//updating the view and show the board
-            view_ptr->setObjects(Model::getInstance().returnObjectsVector());
-            view_ptr->show();
-        }else if(user_command == "default"){
-            view_ptr->setDefault();
-        }else if(user_command == "size"){
-            int num;
-            ss >> num;
-            if(num > MIN_SCALE && num <= MAX_SCALE){
-                view_ptr->setSize(num);
-            }else{
-                //todo exception
-            }
-        }else if(user_command == "zoom"){
-            int num;
-            ss >> num;
-            if(num > 0){
-                view_ptr->zoom(num);
-            }
-        } else if(user_command == "pan"){
-            double arg1 , arg2;
-            ss >> arg1 >> arg2;
-            view_ptr->setOrigins(arg1 , arg2);
-        //---------------------------------------
-        //Model Commands
-        }else if(user_command == "status"){//print status for all simulator objects existing in board
-            Model::getInstance().showSimObjectStatus();
-        }else if(user_command == "create"){//create new ship by command
-            double x=0,y=0;//for parsing the command
-            int resistance =0 , secondArg = 0;
-            string name;
-            string type;
-            string point;
-            getline(ss , name , ' ');   //get name from command
-            getline(ss , type , ' ');   //get type from command
-            getline(ss , point , ' ');  //get point from command
-            point = point.substr(1,point.size());
-            stringstream location(point);
-            location >> x;
-            getline(ss,point , ')');
-            stringstream location2(point);
-            location2 >> y;
-            ss >> resistance;
-            ss >> secondArg;
-            Model::getInstance().addShip(shipFactory::getInstance().createNewShip(name,type,Point(x,y),resistance,secondArg));//creating the ship with ship factory and adding it into the model
-        }else if(user_command == "go"){
-            // up timer + 1
+        try {
+            cout << "Time " << Model::getInstance().getTimer() << ": ";
+            cout << "Enter command: ";
+            getline(cin, line);
+            stringstream ss(line);
+            getline(ss, user_command, ' ');
+            transform(user_command.begin(), user_command.end(), user_command.begin(), ::tolower);
+            //---------------------------------------
+            //View Commands
+            if (user_command == "show") {//updating the view and show the board
+                view_ptr->setObjects(Model::getInstance().returnObjectsVector());
+                view_ptr->show();
+            } else if (user_command == "default") {
+                view_ptr->setDefault();
+            } else if (user_command == "size") {
+                int num;
+                ss >> num;
+                if (num > MIN_SCALE && num <= MAX_SCALE) {
+                    view_ptr->setSize(num);
+                } else {
+                    throw viewException();
+                }
+            } else if (user_command == "zoom") {
+                int num;
+                ss >> num;
+                if (num > 0) {
+                    view_ptr->zoom(num);
+                }else throw zoomException();
+            } else if (user_command == "pan") {
+                double arg1, arg2;
+                ss >> arg1 >> arg2;
+                view_ptr->setOrigins(arg1, arg2);
+                //---------------------------------------
+                //Model Commands
+            } else if (user_command == "status") {//print status for all simulator objects existing in board
+                Model::getInstance().showSimObjectStatus();
+            } else if (user_command == "create") {//create new ship by command
+                double x = 0, y = 0;//for parsing the command
+                int resistance = 0, secondArg = 0;
+                string name;
+                string type;
+                string point;
+                getline(ss, name, ' ');   //get name from command
+                getline(ss, type, ' ');   //get type from command
+                getline(ss, point, ' ');  //get point from command
+                point = point.substr(1, point.size());
+                stringstream location(point);
+                location >> x;
+                getline(ss, point, ')');
+                stringstream location2(point);
+                location2 >> y;
+                ss >> resistance;
+                ss >> secondArg;
+                Model::getInstance().addShip(
+                        shipFactory::getInstance().createNewShip(name, type, Point(x, y), resistance,
+                                                                 secondArg));//creating the ship with ship factory and adding it into the model
+            } else if (user_command == "go") {
 
-            //call update for every SimObj
-            Model::getInstance().go();
-        //---------------------------------------
-        //Ships Command
-        }else if(Model::getInstance().thereIsSuchShip(user_command)){//if there is such ship
-            //if user command = ship name;
-            string command;
-            ss >> command;
-            Ship* s = Model::getInstance().getShipByName(user_command); //get the ship by his name from user command
-            if(!s){
-                cout << "the ship was not allocate" <<endl;
-                exit(1);
+                //call update for every SimObj
+                Model::getInstance().go();
+                //---------------------------------------
+                //Ships Command
+            } else if (Model::getInstance().thereIsSuchShip(user_command)) {//if there is such ship
+                //if user command = ship name;
+                string command;
+                ss >> command;
+                Ship *s = Model::getInstance().getShipByName(user_command); //get the ship by his name from user command
+                if (!s) {
+                    throw shipNotFoundException();
+                }
+                if (command == "stop") {
+                    s->stop();
+                } else if (parseLineForErrors(ss.str())) {
+                    string mission = line.erase(0, user_command.size() + 1).c_str();
+                    s->insertMissionToVector(mission);//insert the command into ship queue
+                } else { cerr << "There has been some problem the command didn't insert into queue" << endl; }
+                //---------------------------------------
+            } else if (user_command == "exit") {
+                cout << "Exit..." << endl;
+                return;
+            } else {
+                throw noSuchCommandException();
             }
-            if(command == "stop"){
-                s->stop();
-            }else if(parseLineForErrors(ss.str())){
-                string mission  = line.erase(0,user_command.size()+1).c_str();
-                s->insertMissionToVector(mission);//insert the command into ship queue
-            }else{cerr << "There has been some problem the command didn't insert into queue" << endl;}
-        //---------------------------------------
-        }else if(user_command == "exit"){
-            cout << "Exit..."<< endl;
-            return;
-            //check for memory leak
-        }else { cout << "There is no such command, Try again and this time do it good" << endl;}
+        }catch (exception& e){//catch any exception and continue
+            cerr << e.what() << endl << endl;
+        }
     }
 }
 
@@ -106,7 +110,7 @@ void Controller::Input(const string &portsFile) {
     ifstream in(portsFile);
     if(!in){
         cout << "Error cannot find such file";
-        return;
+        throw fileNotFoundException();
     }
     string line;
     while(getline(in,line,'\n')){
@@ -144,8 +148,7 @@ bool Controller::parseLineForErrors(const string &usrLine) {
     stringstream ssargs(args);
     Ship* s = Model::getInstance().getShipByName(name);
     if(!s){
-        cout << "the ship was not allocate" <<endl;
-        exit(1);
+        throw shipNotFoundException();
     }
 //course-----------------------------------------------------------------------
     if(command == "course"){
@@ -154,8 +157,7 @@ bool Controller::parseLineForErrors(const string &usrLine) {
             ssargs >> angle;
             ssargs >> speed;
             if(speed <= 0){
-                cerr << "speed argument illegal" << endl;
-                return false;
+                throw negativeSpeedException();
             }else{
                 return  true;
             }
@@ -167,16 +169,13 @@ bool Controller::parseLineForErrors(const string &usrLine) {
             double speed , x , y;
             ssargs >> x >> y >> speed;
             if(speed <= 0){
-                cerr << "speed argument illegal" << endl;
-                return false;
+                throw negativeSpeedException();
             }
             else{
                 return true;
             }
         }else {
-            cerr << "need more arguments " << endl;
-            //todo exceptopn
-            return false;
+            throw commandErrorException("position");
         }
 //destination-----------------------------------------------------------------------
     }else if(command == "destination"){
@@ -190,18 +189,13 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                 if(speed > 0){
                     return true;
                 } else
-                    cerr << "speed argument illegal" << endl;
-                return false;
+                    throw negativeSpeedException();
             }
             else{
-                cerr << "port name ERROR"<<endl;
-                //todo exception
-                return false;
+                throw noPortInNameException();
             }
         }else{
-            cerr << "Wrong list of arguments " << endl;
-            //todo exceptopn
-            return false;
+            throw commandErrorException("destination");
         }
 //loat_at-----------------------------------------------------------------------
     }else if(command == "load_at"){

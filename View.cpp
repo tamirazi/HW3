@@ -29,7 +29,7 @@ void View::show() {
         }else { cout << setw(8);}
 
         for (double j = x; j <= max_x; j += scale) {
-            //todo: if in (j , i) there is a ship print it
+            //if in (j , i) there is a ship print it
             vector<shared_ptr<SimObject>>::iterator iter = objects.begin();
             for(;iter != objects.end() ; ++iter){
                 double dirX = iter.operator*().operator*().getLocation().x;

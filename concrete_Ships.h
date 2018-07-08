@@ -20,7 +20,8 @@ private:
     int containers_capacity;
     int containers_to_load ;
     int containers_to_unload ;
-    queue<string> tasks;
+    string rightKnowMission;
+    vector<string> tasks;
 public:
     Freighter(const string& name ,const string& type, const Point& p , int resistance , int capacity):Ship(name ,type, p),resistance(resistance),containers_capacity(capacity),containers_to_load(0) ,containers_to_unload(0) {
         Ship::setFuel(FREIGHTER_FUEL_CAPACITY);
@@ -46,6 +47,14 @@ public:
     int getResistance() const {
         return resistance;
     }
+    void printTasks(){
+        cout << getName() << "  Tasks:" << endl;
+        auto iter = tasks.begin();
+        for(;iter!= tasks.end();iter++){
+            cout << iter.operator*() <<endl;
+        }
+    }
+    void insertSubMissionsToTasks(const string & name);
     int getContainers_to_load() const {
         return containers_to_load;
     }

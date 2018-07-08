@@ -7,13 +7,39 @@ void Freighter::playCommand() {
     if(!missions.empty()){
         //do the task
         if(thereIsErgentRequest()){
+            rightKnowMission = getCommandByPriority();
+            cout << "what to do know is :::: " << rightKnowMission << endl;
+            stringstream ss(rightKnowMission);
+            string command;
+            ss >> command;
+            if(command == "destination"){
+                string portName;
+                ss >> portName;
+                insertSubMissionsToTasks(portName);
+                printTasks();
+            }
+
+
+        }else{
+            //keep doing what you are doing
+
 
         }
     }
 }
 const string Freighter::getCommandByPriority() {
-    string s;
-    return s;
+    auto iter = missions.begin();
+    string line;
+    for(;iter != missions.end(); ++iter){
+        stringstream ss(iter.operator*());
+        string command;
+        ss >> command;
+        if(command == "position" ||  command == "course" ||  command == "destination"){
+            line = iter.operator*();
+            return line.c_str();
+        }
+    }
+    return line;
 }
 bool Freighter::thereIsErgentRequest() {
     auto iter = missions.end();
@@ -25,15 +51,29 @@ bool Freighter::thereIsErgentRequest() {
         stringstream ss(iter.operator*());
         string command;
         ss >> command;
-        if(!gotACommand && (command == "point" ||  command == "course" ||  command == "destination")){
+        if(!gotACommand && (command == "position" ||  command == "course" ||  command == "destination")){
             gotACommand =true;
             line = iter.operator*().c_str();
-        }else if(command == "point" ||  command == "course" ||  command == "destination"){
+        }else if(command == "position" ||  command == "course" ||  command == "destination"){
             iter = missions.erase(iter);
         }
     }
     return gotACommand;
 }
+
+void Freighter::insertSubMissionsToTasks(const string & name) {
+
+    auto iter = missions.begin();
+    for(;iter != missions.end() ; ++iter){
+        stringstream ss(iter.operator*());
+        string tmp;
+        ss>> tmp;
+        ss>> tmp;
+        if(tmp == name)
+            tasks.push_back(iter.operator*());
+    }
+}
+
 //---------------------------------------------------------------------------------------Patrol
 void Patrol::playCommand() {
 
@@ -109,7 +149,7 @@ string Patrol::findNextPort(vector<string>& portsLeft) {
 
     map<double , string , greater<double> > distances;
 
-    for (unsigned int i = 0; i <portsLeft.size() ; ++i) {
+    for(unsigned int i = 0; i <portsLeft.size() ; ++i) {
         if(portsLeft[i] != destinationName){
             Port *p = Model::getInstance().getPortByName(portsLeft[i]);
             double  dis = distance(getLocation() , p->getLocation());
@@ -127,7 +167,7 @@ const string Patrol::getCommandByPriority() {
     return missions.begin().operator*();
 }
 //---------------------------------------------------------------------------------------Cruiser
-void Cruiser::playCommand() {//play cruisder command
+void Cruiser::playCommand() {//play Cruiser command
     if(!missions.empty()){
         string line = getCommandByPriority();
         if(line != ""){

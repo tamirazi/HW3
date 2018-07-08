@@ -50,7 +50,7 @@ void Patrol::playCommand() {
         }else if(command == "nothing")
             tasks.pop_back();
 
-    }else if(tasks.empty() ){
+    }else if(tasks.empty() && destinationName != "" ){
         cout << getName() << " " << "just finish full circle patrol in all ports" << endl;
     }
 

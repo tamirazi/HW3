@@ -125,3 +125,11 @@ bool Ship::isArrived() {
     return getLocation().x == getDestination().x && getLocation().y == getDestination().y && !destinationName.empty();
 }
 
+int Ship::getMaxSpeed(const string& type){
+    if(type == "Freighter") return FRIEGHTER_MAXSPEED;
+    if(type == "Cruiser") return CRUSIER_MAXSPEED;
+    if(type == "Patrol") return PATROL_MAXSPEED;
+    return -1;
+
+}
+

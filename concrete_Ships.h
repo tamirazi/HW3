@@ -12,7 +12,7 @@
 #include "Ship.h"
 
 
-enum { FREIGHTER_FUEL_CAPACITY = 500, FRIEGHTER_MAXSPEED = 40,PATROL_FUEL_CAPACITY = 900, PATROL_MAXSPEED = 15, CRUSIER_MAXSPEED = 75};//fuel and speed limits
+enum { FREIGHTER_FUEL_CAPACITY = 500, FRIEGHTER_MAXSPEED = 4,PATROL_FUEL_CAPACITY = 900, PATROL_MAXSPEED = 15, CRUSIER_MAXSPEED = 75};//fuel and speed limits
 //---------------------------------------------------------------------------------------Freighter
 class Freighter :public Ship{//types of ships
 private:

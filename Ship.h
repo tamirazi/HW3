@@ -51,6 +51,7 @@ public:
             cout << iter.operator*() <<endl;
         }
     };
+    int getMaxSpeed(const string& type);
 
 };
 

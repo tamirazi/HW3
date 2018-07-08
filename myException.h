@@ -44,6 +44,8 @@ public:
     const char* what()const noexcept override{ return  "Cruiser cannot attack Cruiser";}
 };
 
+
+
 class commandErrorException: public exception{//if runtime input occurred  missing or wrong input statement
 
     string s;
@@ -78,6 +80,15 @@ public:
     };
 
     const char* what()const noexcept override{ return  error.c_str();}
+};
+
+class maxSpeedException: public exception{
+    string error;
+public:
+    explicit maxSpeedException(const string& type){
+        error = "Error: speed is over the maximum speed of " +  type ;
+    };
+    const char* what()const noexcept override{ return  "";}
 };
 
 #endif //HW3_MYEXCEPTION_H

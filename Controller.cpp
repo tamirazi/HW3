@@ -4,7 +4,6 @@
 
 #include <fstream>
 #include "Controller.h"
-
 enum { MIN_SCALE = 3  ,MAX_SCALE = 60};
 
 Controller::Controller() {
@@ -158,6 +157,7 @@ bool Controller::parseLineForErrors(const string &usrLine) {
             double angle, speed;
             ssargs >> angle;
             ssargs >> speed;
+            if(speed > s->getMaxSpeed(s->getType())) throw maxSpeedException(s->getType());
             if(speed <= 0){
                 throw negativeSpeedException();
             }else{
@@ -171,6 +171,7 @@ bool Controller::parseLineForErrors(const string &usrLine) {
         if(wordsCounter(args) == 3){
             double speed , x , y;
             ssargs >> x >> y >> speed;
+            if(speed > s->getMaxSpeed(s->getType())) throw maxSpeedException(s->getType());
             if(speed <= 0){
                 throw negativeSpeedException();
             }
@@ -189,10 +190,10 @@ bool Controller::parseLineForErrors(const string &usrLine) {
             ssargs >> portName >> speed;
             Port* p = Model::getInstance().getPortByName(portName);
             if(p){
-                if(speed > 0){
-                    return true;
-                } else
+                if(speed > s->getMaxSpeed(s->getType())) throw maxSpeedException(s->getType());
+                if(speed <= 0){
                     throw negativeSpeedException();
+                }
             }
             else{
                 throw noPortInNameException();
@@ -261,11 +262,7 @@ bool Controller::parseLineForErrors(const string &usrLine) {
 
         }
     }
-
-
     return false;
-
-
 }
 
 int Controller::wordsCounter(const string &line) {

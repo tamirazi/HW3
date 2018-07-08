@@ -39,22 +39,46 @@ class zoomException: public exception{
 public:
     const char* what()const noexcept override{ return  "zoom must be bigger than 0";}
 };
+class cruiserException: public exception{
+public:
+    const char* what()const noexcept override{ return  "Cruiser cannot attack Cruiser";}
+};
+
 class commandErrorException: public exception{//if runtime input occurred  missing or wrong input statement
     int whatToPrint = 0;
     string where;
+    string s;
 public:
-    explicit commandErrorException(const string& where,int num = 0){commandErrorException::where = where; commandErrorException::whatToPrint = num;}
+    explicit commandErrorException(const string& where,int num = 0):where(where), whatToPrint(num){
+        if(whatToPrint == 1){
+            s = "Error: using " + where + " the input must have one name argument. ";
+        }
+        if(whatToPrint == 2){
+             s = "Error: using " + where + " the input must have two name argument. ";
+        }
+        if(whatToPrint == 3){
+             s = "Error: using " + where + " the input must have three name argument. ";
+        }
+        if(whatToPrint == 0){
+             s = "Error: using " + where + " not enough arguments. ";
+        }
+    };
 
     const char* what()const noexcept override {
-        if(!whatToPrint){
-            string s = "Error: using " + where + " the input must have at least one name argument. ";
-            return s.c_str();
-        }
-        else {
-            string s = "Error: using " + where + " the input must have at least two name argument. ";
-            return  s.c_str();}
+        return s.c_str();
     }
 
+};
+
+class wrongCommandToShip: public exception{
+    string t , c , error ;
+
+public:
+    explicit wrongCommandToShip(const string& type , const string& command):t(type) , c(command){
+        error = "Error: using " +  c  + " in ship of type " + t + ". ";
+    };
+
+    const char* what()const noexcept override{ return  error.c_str();}
 };
 
 #endif //HW3_MYEXCEPTION_H

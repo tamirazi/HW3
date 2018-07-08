@@ -130,6 +130,8 @@ void Controller::Input(const string &portsFile) {
         location >> y;
         ss >> fuel;
         ss >> produce;
+        if(ss.fail())
+            throw formatErrorException();
         Model::getInstance().addPort(new Port(name,type,Point(x,y),fuel,produce));
     }
 
@@ -161,7 +163,8 @@ bool Controller::parseLineForErrors(const string &usrLine) {
             }else{
                 return  true;
             }
-        }
+        } else
+            throw commandErrorException(command , 2);
 //position-----------------------------------------------------------------------
     }else if( command == "position"){
 
@@ -175,7 +178,7 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                 return true;
             }
         }else {
-            throw commandErrorException("position");
+            throw commandErrorException(command  , 3);
         }
 //destination-----------------------------------------------------------------------
     }else if(command == "destination"){
@@ -195,7 +198,7 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                 throw noPortInNameException();
             }
         }else{
-            throw commandErrorException("destination");
+            throw commandErrorException(command , 2);
         }
 //loat_at-----------------------------------------------------------------------
     }else if(command == "load_at"){
@@ -207,20 +210,14 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                 if(p){
                     return  true;
                 }else{
-                    cerr << "port name ERROR"<<endl;
-                    //todo exception
-                    return false;
+                    throw noPortInNameException();
                 }
             }else{
-                cerr << "Wrong list of arguments " << endl;
-                //todo exception
-                return false;
+                throw commandErrorException(command , 1);
             }
 
         } else{
-            //todo exception
-            cerr << "'load_at' command is only for Freighter ship" << endl;
-            return false;
+            throw wrongCommandToShip(s->getType() , command);
         }
 //unloat_at-----------------------------------------------------------------------
     }else if(command == "unload_at"){
@@ -235,15 +232,11 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                     if(containers_to_load >= 0)
                         return  true;
                 }else{
-                    cerr << "port name ERROR"<< endl;
-                    //todo exception
-                    return false;
+                    throw noPortInNameException();
                 }
             }
         }else{
-            //todo exception
-            cerr << "'unload_at' command is only for Freighter ship" << endl;
-            return false;
+            throw wrongCommandToShip(s->getType() , command);
         }
     }else if( command == "attack"){
         string shipToAttack;
@@ -255,21 +248,17 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                     if(toAttack->getType() == "Freighter" || toAttack->getType() == "Patrol" ){
                         return  true;
                     }else{
-                        cerr << "you cant attack a Cruiser"<< endl;
-                        //todo exception
-                        return false;
+                        throw cruiserException();
                     }
 
                 }else{
-                    cerr << "ship name ERROR"<< endl;
-                    //todo exception
-                    return false;
+                    throw shipNotFoundException();
                 }
-            }
+            } else
+                throw commandErrorException(command , 1);
         }else{
-            //todo exception
-            cerr << "'attack' command is only for Cruiser ship" << endl;
-            return false;
+            throw wrongCommandToShip(s->getType() , command);
+
         }
     }
 

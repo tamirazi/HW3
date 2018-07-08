@@ -24,7 +24,7 @@ void View::show() {
 
         double thisScale = max_y-scale*c;
         if(thisScale == enterY){
-            cout << setw(5)<< thisScale <<" ";
+            cout << setw(5)<< (int)thisScale <<" ";
             enterY -= 3*scale;
         }else { cout << setw(8);}
 
@@ -48,7 +48,7 @@ void View::show() {
     cout << " ";
     for (int k = 0; k < size ; ++k) {
         if((k % 3) == 0) {
-            cout << setw(6) << x;
+            cout << setw(6) << (int)x;
             x += (3 * scale);
         }
     }

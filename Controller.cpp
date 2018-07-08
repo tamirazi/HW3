@@ -275,7 +275,7 @@ bool Controller::parseLineForErrors(const string &usrLine) {
                 }else
                     throw wrongCommandToShip(s->getType() ,command);
     }
-    return false;
+    return true;
 }
 
 int Controller::wordsCounter(const string &line) {

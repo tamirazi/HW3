@@ -88,7 +88,7 @@ public:
     explicit maxSpeedException(const string& type){
         error = "Error: speed is over the maximum speed of " +  type ;
     };
-    const char* what()const noexcept override{ return  "";}
+    const char* what()const noexcept override{ return  error.c_str();}
 };
 
 #endif //HW3_MYEXCEPTION_H

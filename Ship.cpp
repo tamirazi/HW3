@@ -55,6 +55,7 @@ void Ship::show_Status() {
             break;
         case Docked:
             cout << " Docked at " << destinationName ;
+            break;
     }
 }
 void Ship::insertMissionToVector(const string &command) {//insert a string that represent a command into a specific ship queue
@@ -81,7 +82,6 @@ void Ship::setDestinationName(const string &destination) {
 }
 
 void Ship::goToDestination(const string& line) {//the the specific ship to sail by the destination port given in line
-    cout << line << endl;
     stringstream ss(line);
     string command;
     string portName;
@@ -115,6 +115,24 @@ void Ship::goOnCourse(const string &line) {//the the specific ship to sail by th
         movingOnCourse(degree,speed);
     }
 }
+void Ship::goOnPoint(const string &line) {//the the specific ship to sail by the course given in line
+    cout << line << endl;
+    stringstream ss(line);
+    string command;
+    float x;
+    float y;
+    float speed;
+    ss  >> command;
+    if(command == "position") {
+        ss >> x;
+        ss >> y;
+        ss >> speed;
+        setLocation(progressByDestination(getLocation(),Point(x,y),speed));
+        setDestination(Point(x,y));
+        movingToDestination(Point(x,y),speed);
+        cout << "Moving to point ->" << x << " " << y << " on speed " << speed << endl;
+    }
+}
 
 void Ship::dockAtPort() {
     setShip_status(Docked);
@@ -130,6 +148,5 @@ int Ship::getMaxSpeed(const string& type){
     if(type == "Cruiser") return CRUSIER_MAXSPEED;
     if(type == "Patrol") return PATROL_MAXSPEED;
     return -1;
-
 }
 

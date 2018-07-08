@@ -8,22 +8,17 @@ void Freighter::playCommand() {
         //do the task
         if(thereIsErgentRequest()){
             rightKnowMission = getCommandByPriority();
-            cout << "what to do know is :::: " << rightKnowMission << endl;
             stringstream ss(rightKnowMission);
             string command;
             ss >> command;
             if(command == "destination"){
+                tasks.clear();
                 string portName;
                 ss >> portName;
                 insertSubMissionsToTasks(portName);
-                printTasks();
             }
-
-
         }else{
             //keep doing what you are doing
-
-
         }
     }
 }
@@ -36,12 +31,14 @@ const string Freighter::getCommandByPriority() {
         ss >> command;
         if(command == "position" ||  command == "course" ||  command == "destination"){
             line = iter.operator*();
+            iter = missions.erase(iter);
             return line.c_str();
         }
     }
     return line;
 }
 bool Freighter::thereIsErgentRequest() {
+
     auto iter = missions.end();
     bool gotACommand = false;
     string line;
@@ -53,13 +50,13 @@ bool Freighter::thereIsErgentRequest() {
         ss >> command;
         if(!gotACommand && (command == "position" ||  command == "course" ||  command == "destination")){
             gotACommand =true;
-            line = iter.operator*().c_str();
         }else if(command == "position" ||  command == "course" ||  command == "destination"){
             iter = missions.erase(iter);
         }
     }
     return gotACommand;
 }
+
 
 void Freighter::insertSubMissionsToTasks(const string & name) {
 
@@ -69,9 +66,52 @@ void Freighter::insertSubMissionsToTasks(const string & name) {
         string tmp;
         ss>> tmp;
         ss>> tmp;
-        if(tmp == name)
+        if(tmp == name || tmp == "refuel")
             tasks.push_back(iter.operator*());
     }
+}
+
+bool Freighter::thereIsDock() {
+    auto iter = tasks.begin();
+    bool ans = false;
+    for(;iter != tasks.end();++iter){
+        stringstream ss(iter.operator*());
+        string tmp;
+        ss>> tmp;
+        if(tmp == "dock_at"){
+            iter = tasks.erase(iter);
+            ans = true;
+        }
+    }
+    return ans;
+}
+
+void Freighter::dockedMissions() {
+    auto iter = tasks.begin();
+    stringstream ss(iter.operator*());
+    string mission;
+    ss >> mission;
+    if(mission == "load_at"){
+        containers_on = containers_capacity;
+    }
+    if(mission == "unload_at"){
+        int howMany;
+        ss >> howMany;
+        containers_on = containers_on-howMany;
+    }
+    if(mission == "refuel"){
+        int howMany;
+        ss >> howMany;
+        Port* port = Model::getInstance().getPortByName(destinationName);
+        if( port->getCapicity() > FREIGHTER_FUEL_CAPACITY - fuel){
+            fuel = FREIGHTER_FUEL_CAPACITY;
+            port->setCapacity(FREIGHTER_FUEL_CAPACITY - fuel);
+        }else{
+            fuel = fuel+port->getCapicity();
+            port->setCapacity(0);
+        }
+    }
+    tasks.erase(iter);
 }
 
 //---------------------------------------------------------------------------------------Patrol

@@ -44,6 +44,7 @@ public:
     void insertMissionToVector(const string& command);
     bool isArrived();
     void dockAtPort();
+    void goOnPoint(const string &line);
     void printMissions(){
         cout << getName() << "  missions:" << endl;
         auto iter = missions.begin();

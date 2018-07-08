@@ -25,3 +25,7 @@ void Port::show_Status() {
     getLocation().print();
     cout << ", Fuel available: " << getCapicity() << " kl" << endl;
 }
+
+void Port::setCapacity(int capacity) {
+    Port::capacity = capacity;
+}

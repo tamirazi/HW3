@@ -9,6 +9,10 @@
 class Port :public SimObject{
 private:
     int capacity;
+public:
+    void setCapacity(int capacity);
+
+private:
     int make_per_hours;
 
 public:

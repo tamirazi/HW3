@@ -12,12 +12,13 @@
 #include "Ship.h"
 
 
-enum { FREIGHTER_FUEL_CAPACITY = 500, FRIEGHTER_MAXSPEED = 4,PATROL_FUEL_CAPACITY = 900, PATROL_MAXSPEED = 15, CRUSIER_MAXSPEED = 75};//fuel and speed limits
+enum { FREIGHTER_FUEL_CAPACITY = 500, FRIEGHTER_MAXSPEED = 40,PATROL_FUEL_CAPACITY = 900, PATROL_MAXSPEED = 15, CRUSIER_MAXSPEED = 75};//fuel and speed limits
 //---------------------------------------------------------------------------------------Freighter
 class Freighter :public Ship{//types of ships
 private:
     int resistance;//local variables
     int containers_capacity;
+    int containers_on;
     int containers_to_load ;
     int containers_to_unload ;
     string rightKnowMission;
@@ -29,10 +30,47 @@ public:
         consumption = 10;
     };
     void update() override{
+        int cases = 0 ;
         cout << "Freighter update"<<endl;
-        playCommand();
+        if( ship_status == Docked){
+            if(!tasks.empty()){
+                dockedMissions();
+            } else{Ship::stop();}
+
+        }else{ playCommand(); }
+
+        stringstream ss(rightKnowMission);
+        string command;
+        string portName;
+        ss >> command;
+        if(command == "destination")cases =1;
+        if(command == "course")cases =2;
+        if(command == "position")cases =3;
+        switch (cases){
+            case 1: {
+                ss >> portName;
+                insertSubMissionsToTasks(portName);
+                goToDestination(rightKnowMission);
+                if (isArrived()) {
+                    if (thereIsDock()) {
+                        dockAtPort();
+                    }
+                }
+                break;
+            }
+            case 2:{
+                goOnCourse(rightKnowMission);
+                break;}
+            case 3:{
+                goOnPoint(rightKnowMission);
+                break;}
+            default:{
+                cout << "Error in switch case" << endl;
+                break;}
+        }
     }//update the ship missions
     void playCommand() override; // plays another command from vector
+    void dockedMissions();
     void show_Status() override {//show freighter status
         std::cout << std::fixed;
         std::cout << std::setprecision(2);
@@ -40,10 +78,11 @@ public:
         getLocation().print();
         cout <<", fuel: " << getFuel() << " kl, resistance: " << resistance;
         Ship::show_Status();
-        cout << ", containers: " << containers_capacity <<  endl;
+        cout << ", containers: " << containers_on <<  endl;
     }
     const string getCommandByPriority() override;
     bool thereIsErgentRequest();
+    bool thereIsDock();
     int getResistance() const {
         return resistance;
     }
@@ -55,23 +94,8 @@ public:
         }
     }
     void insertSubMissionsToTasks(const string & name);
-    int getContainers_to_load() const {
-        return containers_to_load;
-    }
-    int getContainers_to_unload() const {
-        return containers_to_unload;
-    }
     void setContainers_capacity(int containers_capacity) {
         Freighter::containers_capacity = containers_capacity;
-    }
-    void setContainers_to_load(int containers_to_load) {
-        Freighter::containers_to_load = containers_to_load;
-    }
-    void setContainers_to_unload(int containers_to_unload) {
-        Freighter::containers_to_unload = containers_to_unload;
-    }
-    int getContainers_capacity() const {
-        return containers_capacity;
     }
 };
 //---------------------------------------------------------------------------------------Patrol
